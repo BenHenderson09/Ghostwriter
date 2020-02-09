@@ -1,5 +1,5 @@
-#ifndef CLIARGUMENTPARSER_H
-#define CLIARGUMENTPARSER_H
+#ifndef CLIARGUMENTPARSER_HPP
+#define CLIARGUMENTPARSER_HPP
 
 #include <map>
 #include <string>
@@ -10,6 +10,7 @@ class CLIArgumentParser {
     public:
         CLIArgumentParser(std::string args);
         CLIArgumentParser(char** args);
+        CLIArgumentParser() = default;
 
         std::string args;
         std::map<std::string, std::string> parsedStringArgs;

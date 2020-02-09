@@ -1,5 +1,5 @@
-#ifndef FLAGCONFIG_H
-#define FLAGCONFIG_H
+#ifndef FLAGCONFIG_HPP
+#define FLAGCONFIG_HPP
 
 #include <nlohmann/json.hpp>
 

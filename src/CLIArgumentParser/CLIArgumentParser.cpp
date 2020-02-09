@@ -5,7 +5,6 @@
 #include "CLIArgumentParser.hpp"
 
 // TODO implement a way of checking for invalid args
-// TODO allow for keyboard input text as well as input file
 
 CLIArgumentParser::CLIArgumentParser(std::string args){
     this->args = args;
@@ -26,7 +25,7 @@ std::string CLIArgumentParser::convertDoublePointerArgsToString(char** args){
             argsAsString += " ";
         }
 
-        argsAsString += *(args+i); // TODO Consider using a stream for this
+        argsAsString += *(args+i);
     }
 
     return argsAsString;
@@ -70,11 +69,12 @@ std::string CLIArgumentParser::extractFlagValueFromArgs(std::string flag){
     int indexOfStartOfFlagValue =
         args.find(flag) + flag.length() + 1;
 
-    int indexOfEndOfFlagValue =
-        args.find(" ", indexOfStartOfFlagValue) - indexOfStartOfFlagValue;
+    // Uses index of next flag, or simply an npos value if no flags remain
+    int lengthOfFlagValue =
+        args.find(" --", indexOfStartOfFlagValue) - indexOfStartOfFlagValue;
 
     std::string flagValue =
-        args.substr(indexOfStartOfFlagValue, indexOfEndOfFlagValue);
+        args.substr(indexOfStartOfFlagValue, lengthOfFlagValue);
 
     return flagValue;
 }
