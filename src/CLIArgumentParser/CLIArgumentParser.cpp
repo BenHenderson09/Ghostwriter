@@ -3,8 +3,7 @@
 #include <vector>
 #include <nlohmann/json.hpp>
 #include "CLIArgumentParser.hpp"
-
-// TODO implement a way of checking for invalid args
+#include "../util/JSONUtils/ObjectHasKey.hpp"
 
 CLIArgumentParser::CLIArgumentParser(std::string args){
     this->args = args;
@@ -34,6 +33,7 @@ std::string CLIArgumentParser::convertDoublePointerArgsToString(char** args){
 void CLIArgumentParser::parseArgs(){
     parseBoolArgs();
     parseStringArgs();
+    checkIfArgsAreValid();
 }
 
 void CLIArgumentParser::parseBoolArgs(){
@@ -66,8 +66,9 @@ void CLIArgumentParser::parseStringArgs(){
 }
 
 std::string CLIArgumentParser::extractFlagValueFromArgs(std::string flag){
-    int indexOfStartOfFlagValue =
-        args.find(flag) + flag.length() + 1;
+    int indexOfStartOfFlagValue = args.find(flag) + flag.length() + 1;
+
+    checkIfFlagValueIsPresent(indexOfStartOfFlagValue);
 
     // Uses index of next flag, or simply an npos value if no flags remain
     int lengthOfFlagValue =
@@ -77,6 +78,21 @@ std::string CLIArgumentParser::extractFlagValueFromArgs(std::string flag){
         args.substr(indexOfStartOfFlagValue, lengthOfFlagValue);
 
     return flagValue;
+}
+
+void CLIArgumentParser::checkIfFlagValueIsPresent(int indexOfStartOfFlagValue){
+    bool flagIsLastAndHasNoValue = indexOfStartOfFlagValue > args.length();
+
+    if (flagIsLastAndHasNoValue){
+        throw std::runtime_error("Specified flag value can't be left blank.");
+    }
+
+    bool flagIsFollowedByAnotherFlag = 
+        args.substr(indexOfStartOfFlagValue, 2) == "--";
+
+    if (flagIsFollowedByAnotherFlag){
+        throw std::runtime_error("Specified flag value can't be left blank.");
+    }
 }
 
 std::vector<std::string> CLIArgumentParser
@@ -90,4 +106,24 @@ std::vector<std::string> CLIArgumentParser
     }
 
     return flags;
+}
+
+void CLIArgumentParser::checkIfArgsAreValid(){
+    checkIfInputTextHasBeenGivenCorrectly();
+}
+
+void CLIArgumentParser::checkIfInputTextHasBeenGivenCorrectly(){
+    bool inputFileProvided =
+        JSONUtils::objectHasKey(parsedStringArgs, "--input-file");
+
+    bool inputTextProvided =
+        JSONUtils::objectHasKey(parsedStringArgs, "--input-text");
+
+    if (!inputFileProvided && !inputTextProvided){
+        throw std::runtime_error("Input text must be provided.");
+    }
+
+    if (inputFileProvided && inputTextProvided){
+        throw std::runtime_error("Only one form of input text permitted.");
+    }
 }

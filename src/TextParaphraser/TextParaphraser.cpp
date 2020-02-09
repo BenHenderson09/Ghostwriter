@@ -37,6 +37,10 @@ std::string TextParaphraser::readInputFile(std::string inputFilePath){
 
     inputFileReader.open(inputFilePath);
     
+    if (!inputFileReader.is_open()){
+        throw std::runtime_error("Can not open input file.");
+    }
+
     for(int i = 0; !inputFileReader.eof(); i++){
         std::string line;
         getline(inputFileReader, line);

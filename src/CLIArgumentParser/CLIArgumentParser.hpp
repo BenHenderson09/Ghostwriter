@@ -22,7 +22,10 @@ class CLIArgumentParser {
         void parseBoolArgs();
         void parseStringArgs();
         std::string extractFlagValueFromArgs(std::string args);
+        void checkIfFlagValueIsPresent(int indexOfStartOfFlagValue);
         std::vector<std::string> extractFlagsFromConfig(std::string type);
+        void checkIfArgsAreValid();
+        void checkIfInputTextHasBeenGivenCorrectly();
 };
 
 #endif
