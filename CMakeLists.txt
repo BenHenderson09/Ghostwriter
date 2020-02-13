@@ -34,3 +34,6 @@ add_executable(ghostwriter ${SOURCE_FILES} ${HEADER_FILES})
 # Link libraries
 target_link_libraries(ghostwriter PRIVATE nlohmann_json::nlohmann_json)
 target_link_libraries(ghostwriter PRIVATE curl)
+
+# Install config
+install(TARGETS ghostwriter DESTINATION bin)
