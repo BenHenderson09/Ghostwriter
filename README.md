@@ -11,9 +11,9 @@ as a replacement for the original word.
  - Uses [libcurl](https://curl.haxx.se/libcurl/) to carry out HTTP requests to API
  
  ## Installation
- Installation is fairly simple, following the standard method of installing with CMake.
+ Installation is fairly simple, following the standard method of installing with CMake. Run as root.
  1. `git clone https://github.com/BenHenderson09/Ghostwriter`
- 2. `mkdir -p Ghostwriter/build && cd build`
+ 2. `mkdir -p Ghostwriter/build && cd Ghostwriter/build`
  3. `cmake .. && make install`
  
  **Note:** As of yet, an API key for the [WordsAPI](https://www.wordsapi.com/) must be inserted
