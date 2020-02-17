@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <thread>
 #include "../CLIArgumentParser/CLIArgumentParser.hpp"
 
 class TextParaphraser {
@@ -23,9 +24,11 @@ class TextParaphraser {
         void paraphraseText();
         std::vector<std::string> splitInputTextIntoWords();
         bool wordRequiresModification(const std::string& word);
-        std::string createWordReplacement(const std::string& word);
+        std::thread createWordModificationThread(std::string& word);
+        void modifyWord(std::string& word);
         std::string createMultipleSuggestionsList
             (const std::vector<std::string>& synonyms, const std::string& word);
+        void formatOutputText(std::vector<std::string> inputTextAsWords);
 };
 
 #endif

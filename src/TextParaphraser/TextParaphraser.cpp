@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <thread>
 #include <curl/curl.h>
 #include "TextParaphraser.hpp"
 #include "../CLIArgumentParser/CLIArgumentParser.hpp"
@@ -55,15 +56,32 @@ std::string TextParaphraser::readInputFile(const std::string& inputFilePath){
 }
 
 void TextParaphraser::paraphraseText(){
-    for (std::string& word : splitInputTextIntoWords()){
+    std::vector<std::string> inputTextAsWords = splitInputTextIntoWords();
+    std::vector<std::thread> wordModificationThreads;
+
+    for (std::string& word : inputTextAsWords){
         if (wordRequiresModification(word)){
-            word = createWordReplacement(word);
+            wordModificationThreads.push_back(
+                createWordModificationThread(word)
+            );
         }
-        
-        outputText += word + " ";
     }
 
-    outputText.pop_back(); // Remove trailing space
+    for (std::thread& thread : wordModificationThreads){
+        thread.join();
+    }
+
+    formatOutputText(inputTextAsWords);
+}
+
+std::thread TextParaphraser::createWordModificationThread(std::string& word){
+    std::thread wordModificationThread(
+        &TextParaphraser::modifyWord,
+        this,
+        std::ref(word)
+    );
+
+    return wordModificationThread;
 }
 
 bool TextParaphraser::wordRequiresModification(const std::string& word){
@@ -87,7 +105,7 @@ std::vector<std::string> TextParaphraser::splitInputTextIntoWords(){
     return words;
 }
 
-std::string TextParaphraser::createWordReplacement(const std::string& word){
+void TextParaphraser::modifyWord(std::string& word){
     SynonymFinder synonymFinder(word);
     std::vector<std::string> synonyms = synonymFinder.synonyms;
     
@@ -97,10 +115,10 @@ std::string TextParaphraser::createWordReplacement(const std::string& word){
     );
 
     if (provideMultipleSuggestions){
-        return createMultipleSuggestionsList(synonyms, word);
+        word = createMultipleSuggestionsList(synonyms, word);
     }
     else {
-        return (synonyms.size() == 0 ? word : synonyms.at(0));
+        word = (synonyms.size() == 0 ? word : synonyms.at(0));
     }
 }
 
@@ -116,4 +134,12 @@ std::string TextParaphraser::createMultipleSuggestionsList
     suggestionsList += ")";
 
     return suggestionsList;
+}
+
+void TextParaphraser::formatOutputText(std::vector<std::string> inputTextAsWords){
+    for (std::string word : inputTextAsWords){
+        outputText += word + " ";
+    }
+
+    outputText.pop_back(); // Remove trailing backslash
 }

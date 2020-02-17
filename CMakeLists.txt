@@ -31,6 +31,11 @@ set(SOURCE_FILES
 # Create executable "ghostwriter"
 add_executable(ghostwriter ${SOURCE_FILES} ${HEADER_FILES})
 
+# Threading
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+target_link_libraries(ghostwriter PRIVATE Threads::Threads)
+
 # Link libraries
 target_link_libraries(ghostwriter PRIVATE nlohmann_json::nlohmann_json)
 target_link_libraries(ghostwriter PRIVATE curl)
