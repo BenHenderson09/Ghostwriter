@@ -33,3 +33,6 @@ Either `--input-text` or `--input-file` **must** be specified, but not both. All
  Command: `ghostwriter --input-text hello there --multiple-suggestions`
  
  Output: `(hi/how-do-you-do/howdy/hullo/hello) (thither/there)`
+ 
+ ## Limitations
+ - When using `--input-text` certain characters such as a single quote `'` must escaped with a backslash `\`

@@ -5,7 +5,7 @@
 #include <nlohmann/json.hpp>
 
 namespace JSONUtils {
-    bool objectHasKey(nlohmann::json object, std::string key);
+    bool objectHasKey(const nlohmann::json& object, const std::string& key);
 }
 
 #endif

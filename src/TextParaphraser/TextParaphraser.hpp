@@ -7,25 +7,25 @@
 
 class TextParaphraser {
     public:
-        TextParaphraser(CLIArgumentParser argumentParser);
+        TextParaphraser(const CLIArgumentParser& argumentParser);
         TextParaphraser() = default;
 
         std::string outputText;
 
     private:
-        CLIArgumentParser argumentParser;
+        const CLIArgumentParser& argumentParser;
         std::string inputText;
         bool isOutputLocationAFile;
 
         void organizeInputText();
-        std::string readInputFile(std::string inputFilePath);
+        std::string readInputFile(const std::string& inputFilePath);
         void determineOutputLocation();
         void paraphraseText();
         std::vector<std::string> splitInputTextIntoWords();
-        bool wordRequiresModification(std::string word);
-        std::string createWordReplacement(std::string word);
+        bool wordRequiresModification(const std::string& word);
+        std::string createWordReplacement(const std::string& word);
         std::string createMultipleSuggestionsList
-            (std::vector<std::string> synonyms, std::string word);
+            (const std::vector<std::string>& synonyms, const std::string& word);
 };
 
 #endif

@@ -5,13 +5,12 @@
 #include "CLIArgumentParser.hpp"
 #include "../util/JSONUtils/ObjectHasKey.hpp"
 
-CLIArgumentParser::CLIArgumentParser(std::string args){
-    this->args = args;
+CLIArgumentParser::CLIArgumentParser(const std::string& args) : args(args){
     parseArgs();
 }
 
-CLIArgumentParser::CLIArgumentParser(char** args){
-    this->args = convertDoublePointerArgsToString(args);
+CLIArgumentParser::CLIArgumentParser(char** args)
+    : args(convertDoublePointerArgsToString(args)){
     parseArgs();
 }
 
@@ -39,7 +38,7 @@ void CLIArgumentParser::parseArgs(){
 void CLIArgumentParser::parseBoolArgs(){
     std::vector<std::string> boolFlags = extractFlagsFromConfig("bool");
 
-    for (std::string flag : boolFlags){
+    for (const std::string& flag : boolFlags){
         bool isFlagSpecifiedInArgs = args.find(flag) != std::string::npos;
 
         if (isFlagSpecifiedInArgs){
@@ -53,7 +52,7 @@ void CLIArgumentParser::parseBoolArgs(){
 void CLIArgumentParser::parseStringArgs(){
     std::vector<std::string> stringFlags = extractFlagsFromConfig("string");
 
-    for (std::string flag : stringFlags){
+    for (const std::string& flag : stringFlags){
         bool isFlagSpecifiedInArgs = args.find(flag) != std::string::npos;
 
         if (isFlagSpecifiedInArgs){
@@ -65,7 +64,7 @@ void CLIArgumentParser::parseStringArgs(){
     }
 }
 
-std::string CLIArgumentParser::extractFlagValueFromArgs(std::string flag){
+std::string CLIArgumentParser::extractFlagValueFromArgs(const std::string& flag){
     int indexOfStartOfFlagValue = args.find(flag) + flag.length() + 1;
 
     checkIfFlagValueIsPresent(indexOfStartOfFlagValue);
@@ -96,11 +95,11 @@ void CLIArgumentParser::checkIfFlagValueIsPresent(int indexOfStartOfFlagValue){
 }
 
 std::vector<std::string> CLIArgumentParser
-    ::extractFlagsFromConfig(std::string type){
+    ::extractFlagsFromConfig(const std::string& type){
     std::vector<std::string> flags;
 
-    for (auto& item : flagConfigurations.items()){
-        if (flagConfigurations[item.key()]["type"] == type){
+    for (const auto& item : FlagConfig::FLAG_CONFIGURATIONS.items()){
+        if (FlagConfig::FLAG_CONFIGURATIONS[item.key()]["type"] == type){
             flags.push_back(item.key());
         }
     }

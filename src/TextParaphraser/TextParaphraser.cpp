@@ -8,8 +8,8 @@
 #include "../SynonymFinder/SynonymFinder.hpp"
 #include "../util/JSONUtils/ObjectHasKey.hpp"
 
-TextParaphraser::TextParaphraser(CLIArgumentParser argumentParser){
-    this->argumentParser = argumentParser;
+TextParaphraser::TextParaphraser(const CLIArgumentParser& argumentParser)
+    : argumentParser(argumentParser){
     organizeInputText();
     paraphraseText();
 }
@@ -21,17 +21,18 @@ void TextParaphraser::organizeInputText(){
     );
 
     if (isInputTextProvidedAsArgument){
-        inputText = argumentParser.parsedStringArgs["--input-text"];
+        inputText =
+            argumentParser.parsedStringArgs.at("--input-text");
     }
     else {
         std::string inputFilePath =
-            argumentParser.parsedStringArgs["--input-file"];
+            argumentParser.parsedStringArgs.at("--input-file");
 
         inputText = readInputFile(inputFilePath);
     }
 }
 
-std::string TextParaphraser::readInputFile(std::string inputFilePath){
+std::string TextParaphraser::readInputFile(const std::string& inputFilePath){
     std::ifstream inputFileReader;
     std::string inputFileText;
 
@@ -41,7 +42,7 @@ std::string TextParaphraser::readInputFile(std::string inputFilePath){
         throw std::runtime_error("Can not open input file.");
     }
 
-    for(int i = 0; !inputFileReader.eof(); i++){
+    for (int i = 0; !inputFileReader.eof(); i++){
         std::string line;
         getline(inputFileReader, line);
 
@@ -65,7 +66,7 @@ void TextParaphraser::paraphraseText(){
     outputText.pop_back(); // Remove trailing space
 }
 
-bool TextParaphraser::wordRequiresModification(std::string word){
+bool TextParaphraser::wordRequiresModification(const std::string& word){
     if (word.length() <= 3){
         return false;
     }
@@ -86,7 +87,7 @@ std::vector<std::string> TextParaphraser::splitInputTextIntoWords(){
     return words;
 }
 
-std::string TextParaphraser::createWordReplacement(std::string word){
+std::string TextParaphraser::createWordReplacement(const std::string& word){
     SynonymFinder synonymFinder(word);
     std::vector<std::string> synonyms = synonymFinder.synonyms;
     
@@ -104,15 +105,14 @@ std::string TextParaphraser::createWordReplacement(std::string word){
 }
 
 std::string TextParaphraser::createMultipleSuggestionsList
-    (std::vector<std::string> synonyms, std::string word){
-    synonyms.push_back(word); // Include word as a suggestion
+    (const std::vector<std::string>& synonyms, const std::string& word){
     std::string suggestionsList = "(";
 
-    for (std::string suggestion : synonyms){
+    for (const std::string& suggestion : synonyms){
         suggestionsList += suggestion + "/";
     }
 
-    suggestionsList.pop_back(); // Remove trailing slash
+    suggestionsList += word; // Include original word as a suggestion
     suggestionsList += ")";
 
     return suggestionsList;

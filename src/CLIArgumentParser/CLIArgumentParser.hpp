@@ -8,11 +8,11 @@
 
 class CLIArgumentParser {
     public:
-        CLIArgumentParser(std::string args);
+        CLIArgumentParser(const std::string& args);
         CLIArgumentParser(char** args);
         CLIArgumentParser() = default;
 
-        std::string args;
+        const std::string& args;
         std::map<std::string, std::string> parsedStringArgs;
         std::map<std::string, bool> parsedBoolArgs;
 
@@ -21,9 +21,10 @@ class CLIArgumentParser {
         std::string convertDoublePointerArgsToString(char** args);
         void parseBoolArgs();
         void parseStringArgs();
-        std::string extractFlagValueFromArgs(std::string args);
+        std::string extractFlagValueFromArgs(const std::string& args);
         void checkIfFlagValueIsPresent(int indexOfStartOfFlagValue);
-        std::vector<std::string> extractFlagsFromConfig(std::string type);
+        std::vector<std::string>
+            extractFlagsFromConfig(const std::string& type);
         void checkIfArgsAreValid();
         void checkIfInputTextHasBeenGivenCorrectly();
 };

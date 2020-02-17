@@ -6,14 +6,18 @@
 
 class OutputWriter {
     public:
-        OutputWriter(std::string outputText);
-        void writeOutputText(CLIArgumentParser argumentParser);
+        OutputWriter(const CLIArgumentParser& argumentParser);
+        void writeOutputText(const std::string& outputText);
 
     private:
-        std::string outputText;
+        const CLIArgumentParser& argumentParser;
 
-        void writeToOutputFile(std::string outputFileLocation);
-        void writeToConsole();
+        void writeToOutputFile(
+            const std::string& outputFileLocation,
+            const std::string& outputText
+        );
+        
+        void writeToConsole(const std::string& outputText);
 };
 
 #endif

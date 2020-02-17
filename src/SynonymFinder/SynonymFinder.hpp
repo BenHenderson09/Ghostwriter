@@ -7,13 +7,13 @@
 
 class SynonymFinder {
     public:
-        SynonymFinder(std::string word);
+        SynonymFinder(const std::string& word);
         SynonymFinder() = default;
 
         std::vector<std::string> synonyms;
 
     private:
-        std::string word;
+        const std::string& word;
         std::string apiEndpoint;
 
         void buildApiEndpoint();
@@ -28,7 +28,7 @@ class SynonymFinder {
             std::string* data);
         void executeRequest(CURL* curl);
         std::vector<std::string>
-            extractSynonymsFromResponse(std::string responseString);
+            extractSynonymsFromResponse(const std::string& responseString);
 };
 
 #endif

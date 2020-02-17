@@ -9,8 +9,8 @@ int main(int argc, char** argv){
         CLIArgumentParser argumentParser(argv);
         TextParaphraser paraphraser(argumentParser);
 
-        OutputWriter writer(paraphraser.outputText);
-        writer.writeOutputText(argumentParser);
+        OutputWriter writer(argumentParser);
+        writer.writeOutputText(paraphraser.outputText);
     }
     catch(std::exception& e){
         std::cerr << e.what() << "\n";
