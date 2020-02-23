@@ -7,6 +7,7 @@
 int main(int argc, char** argv){
     try {
         CLIArgumentParser argumentParser(argv);
+
         TextParaphraser paraphraser(argumentParser);
 
         OutputWriter writer(argumentParser);

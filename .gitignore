@@ -1,3 +1,5 @@
-notes
 .vscode
+.idea
+cmake-build-debug
+notes
 build

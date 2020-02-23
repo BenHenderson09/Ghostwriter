@@ -36,3 +36,4 @@ Either `--input-text` or `--input-file` **must** be specified, but not both. All
  
  ## Limitations
  - When using `--input-text` certain characters such as a single quote `'` must escaped with a backslash `\`
+- Must have an internet connection

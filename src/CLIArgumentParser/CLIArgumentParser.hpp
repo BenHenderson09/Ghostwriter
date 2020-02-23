@@ -12,11 +12,16 @@ class CLIArgumentParser {
         CLIArgumentParser(char** args);
         CLIArgumentParser() = default;
 
-        const std::string& args;
+        std::string getArgs();
+        void setArgs(const std::string& args);
+
         std::map<std::string, std::string> parsedStringArgs;
         std::map<std::string, bool> parsedBoolArgs;
 
     private:
+        std::string args;
+
+        void clearPreviouslyParsedArgs();
         void parseArgs();
         std::string convertDoublePointerArgsToString(char** args);
         void parseBoolArgs();

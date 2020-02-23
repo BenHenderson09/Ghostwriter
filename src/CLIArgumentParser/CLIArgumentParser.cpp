@@ -5,12 +5,21 @@
 #include "CLIArgumentParser.hpp"
 #include "../util/JSONUtils/ObjectHasKey.hpp"
 
-CLIArgumentParser::CLIArgumentParser(const std::string& args) : args(args){
-    parseArgs();
+CLIArgumentParser::CLIArgumentParser(const std::string& args){
+    setArgs(args);
 }
 
-CLIArgumentParser::CLIArgumentParser(char** args)
-    : args(convertDoublePointerArgsToString(args)){
+CLIArgumentParser::CLIArgumentParser(char** args){
+    setArgs(convertDoublePointerArgsToString(args));
+}
+
+std::string CLIArgumentParser::getArgs(){
+    return args;
+}
+
+void CLIArgumentParser::setArgs(const std::string& args){
+    this->args = args;
+    clearPreviouslyParsedArgs();
     parseArgs();
 }
 
@@ -27,6 +36,11 @@ std::string CLIArgumentParser::convertDoublePointerArgsToString(char** args){
     }
 
     return argsAsString;
+}
+
+void CLIArgumentParser::clearPreviouslyParsedArgs(){
+    parsedBoolArgs.clear();
+    parsedStringArgs.clear();
 }
 
 void CLIArgumentParser::parseArgs(){
