@@ -4,17 +4,17 @@
 #include <string>
 #include <vector>
 #include <thread>
-#include "../CLIArgumentParser/CLIArgumentParser.hpp"
+#include "../CLIArgumentContainer/CLIArgumentContainer.hpp"
 
 class TextParaphraser {
     public:
-        TextParaphraser(const CLIArgumentParser& argumentParser);
+        TextParaphraser(CLIArgumentContainer& argumentContainer);
         TextParaphraser() = default;
 
         std::string outputText;
 
     private:
-        const CLIArgumentParser& argumentParser;
+        CLIArgumentContainer& argumentContainer;
         std::string inputText;
         bool isOutputLocationAFile;
 

@@ -1,16 +1,15 @@
 #include <iostream>
-#include "CLIArgumentParser/CLIArgumentParser.hpp"
+#include "CLIArgumentContainer/CLIArgumentContainer.hpp"
 #include "TextParaphraser/TextParaphraser.hpp"
 #include "OutputWriter/OutputWriter.hpp"
-#include "./util/JSONUtils/ObjectHasKey.hpp"
 
 int main(int argc, char** argv){
     try {
-        CLIArgumentParser argumentParser(argv);
+        CLIArgumentContainer argumentContainer(argv);
 
-        TextParaphraser paraphraser(argumentParser);
+        TextParaphraser paraphraser(argumentContainer);
 
-        OutputWriter writer(argumentParser);
+        OutputWriter writer(argumentContainer);
         writer.writeOutputText(paraphraser.outputText);
     }
     catch(std::exception& e){

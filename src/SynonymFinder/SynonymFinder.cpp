@@ -2,7 +2,6 @@
 #include <vector>
 #include <string>
 #include <curl/curl.h>
-#include <nlohmann/json.hpp>
 #include "SynonymFinder.hpp"
 #include "../util/JSONUtils/ObjectHasKey.hpp"
 
@@ -74,14 +73,21 @@ void SynonymFinder::executeRequest(CURL* curl){
 
 std::vector<std::string> SynonymFinder
     ::extractSynonymsFromResponse(const std::string& responseString){
-    nlohmann::json response = nlohmann::json::parse(responseString);
+    bool isResponseInJsonFormat = responseString[0] == '{';
 
-    // If api recognizes word
-    if (JSONUtils::objectHasKey(response, "synonyms")){
-        nlohmann::json synonyms = response["synonyms"];
+    if (!isResponseInJsonFormat) return {};
+
+    nlohmann::json jsonResponse = nlohmann::json::parse(responseString);
+    
+    bool doesResponseIncludeSynonyms = 
+        JSONUtils::objectHasKey(jsonResponse, "synonyms");
+
+
+    if (doesResponseIncludeSynonyms){
+        nlohmann::json synonyms = jsonResponse["synonyms"];
 
         return synonyms.get<std::vector<std::string>>();
     }
 
-    return std::vector<std::string>();
+    return {};
 }

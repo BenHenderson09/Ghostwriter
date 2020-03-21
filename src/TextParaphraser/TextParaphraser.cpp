@@ -5,29 +5,26 @@
 #include <thread>
 #include <curl/curl.h>
 #include "TextParaphraser.hpp"
-#include "../CLIArgumentParser/CLIArgumentParser.hpp"
+#include "../CLIArgumentContainer/CLIArgumentContainer.hpp"
 #include "../SynonymFinder/SynonymFinder.hpp"
-#include "../util/JSONUtils/ObjectHasKey.hpp"
 
-TextParaphraser::TextParaphraser(const CLIArgumentParser& argumentParser)
-    : argumentParser(argumentParser){
+TextParaphraser::TextParaphraser(CLIArgumentContainer& argumentContainer)
+    : argumentContainer(argumentContainer){
     organizeInputText();
     paraphraseText();
 }
 
 void TextParaphraser::organizeInputText(){
-    bool isInputTextProvidedAsArgument = JSONUtils::objectHasKey(
-        argumentParser.parsedStringArgs,
-        "--input-text"
-    );
+    bool isInputTextProvidedAsArgument =
+        argumentContainer.wasArgProvided("--input-text");
 
     if (isInputTextProvidedAsArgument){
         inputText =
-            argumentParser.parsedStringArgs.at("--input-text");
+            argumentContainer.getParsedStringArg("--input-text");
     }
     else {
         std::string inputFilePath =
-            argumentParser.parsedStringArgs.at("--input-file");
+            argumentContainer.getParsedStringArg("--input-file");
 
         inputText = readInputFile(inputFilePath);
     }
@@ -107,14 +104,13 @@ std::vector<std::string> TextParaphraser::splitInputTextIntoWords(){
 
 void TextParaphraser::modifyWord(std::string& word){
     SynonymFinder synonymFinder(word);
+    
     std::vector<std::string> synonyms = synonymFinder.synonyms;
     
-    bool provideMultipleSuggestions = JSONUtils::objectHasKey(
-        argumentParser.parsedBoolArgs,
-        "--multiple-suggestions"
-    );
+    bool areMultipleSuggestionsProvided =
+        argumentContainer.getParsedBoolArg("--multiple-suggestions");
 
-    if (provideMultipleSuggestions){
+    if (areMultipleSuggestionsProvided){
         word = createMultipleSuggestionsList(synonyms, word);
     }
     else {

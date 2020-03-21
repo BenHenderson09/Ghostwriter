@@ -2,15 +2,15 @@
 #define OUTPUTWRITER
 
 #include <string>
-#include "../CLIArgumentParser/CLIArgumentParser.hpp"
+#include "../CLIArgumentContainer/CLIArgumentContainer.hpp"
 
 class OutputWriter {
     public:
-        OutputWriter(const CLIArgumentParser& argumentParser);
+        OutputWriter(CLIArgumentContainer& argumentContainer);
         void writeOutputText(const std::string& outputText);
 
     private:
-        const CLIArgumentParser& argumentParser;
+        CLIArgumentContainer& argumentContainer;
 
         void writeToOutputFile(
             const std::string& outputFileLocation,

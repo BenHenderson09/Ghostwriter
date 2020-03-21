@@ -12,7 +12,7 @@ find_package(CURL 7.4.0 REQUIRED)
 
 # Setup header files
 set(HEADER_FILES
-    src/CLIArgumentParser/CLIArgumentParser.hpp
+    src/CLIArgumentContainer/CLIArgumentContainer.hpp
     src/TextParaphraser/TextParaphraser.hpp
     src/SynonymFinder/SynonymFinder.hpp
     src/OutputWriter/OutputWriter.hpp
@@ -22,7 +22,7 @@ set(HEADER_FILES
 # Setup source files
 set(SOURCE_FILES 
     src/ghostwriter.cpp 
-    src/CLIArgumentParser/CLIArgumentParser.cpp
+    src/CLIArgumentContainer/CLIArgumentContainer.cpp
     src/SynonymFinder/SynonymFinder.cpp
     src/TextParaphraser/TextParaphraser.cpp
     src/OutputWriter/OutputWriter.cpp

@@ -1,21 +1,18 @@
 #include <iostream>
 #include <fstream>
 #include "OutputWriter.hpp"
-#include "../CLIArgumentParser/CLIArgumentParser.hpp"
-#include "../util/JSONUtils/ObjectHasKey.hpp"
+#include "../CLIArgumentContainer/CLIArgumentContainer.hpp"
 
-OutputWriter::OutputWriter(const CLIArgumentParser& argumentParser)
-    : argumentParser(argumentParser){}
+OutputWriter::OutputWriter(CLIArgumentContainer& argumentContainer)
+    : argumentContainer(argumentContainer){}
 
 void OutputWriter::writeOutputText(const std::string& outputText){
-    bool isOutputLocationAFile = JSONUtils::objectHasKey(
-        argumentParser.parsedStringArgs,
-        "--output-file"
-    );
+    bool isOutputLocationAFile =
+        argumentContainer.wasArgProvided("--output-file");
 
     if (isOutputLocationAFile){
         const std::string& outputFileLocation =
-            argumentParser.parsedStringArgs.at("--output-file");
+            argumentContainer.getParsedStringArg("--output-file");
 
         writeToOutputFile(outputFileLocation, outputText);
     }
@@ -27,8 +24,11 @@ void OutputWriter::writeOutputText(const std::string& outputText){
 void OutputWriter::writeToOutputFile
     (const std::string& outputFileLocation, const std::string& outputText){
     std::ofstream fileWriter;
+
     fileWriter.open(outputFileLocation);
+
     fileWriter << outputText;
+
     fileWriter.close();
 }
 
