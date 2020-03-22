@@ -10,7 +10,6 @@ class CLIArgumentContainer {
     public:
         CLIArgumentContainer(const std::string& args);
         CLIArgumentContainer(char** args);
-        CLIArgumentContainer() = default;
 
         std::string getInputArgs();
         void processInputArgs(const std::string& args);

@@ -8,7 +8,6 @@
 class SynonymFinder {
     public:
         SynonymFinder(const std::string& word);
-        SynonymFinder() = default;
 
         std::vector<std::string> synonyms;
 

@@ -9,7 +9,6 @@
 class TextParaphraser {
     public:
         TextParaphraser(CLIArgumentContainer& argumentContainer);
-        TextParaphraser() = default;
 
         std::string outputText;
 
