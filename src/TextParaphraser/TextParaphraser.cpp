@@ -119,7 +119,7 @@ void TextParaphraser::modifyWord(std::string& word){
 }
 
 std::string TextParaphraser::createMultipleSuggestionsList
-    (const std::vector<std::string>& synonyms, const std::string& word){
+        (const std::vector<std::string>& synonyms, const std::string& word){
     std::string suggestionsList = "(";
 
     for (const std::string& suggestion : synonyms){

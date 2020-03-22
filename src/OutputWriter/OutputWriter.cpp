@@ -7,8 +7,7 @@ OutputWriter::OutputWriter(CLIArgumentContainer& argumentContainer)
     : argumentContainer(argumentContainer){}
 
 void OutputWriter::writeOutputText(const std::string& outputText){
-    bool isOutputLocationAFile =
-        argumentContainer.wasArgProvided("--output-file");
+    bool isOutputLocationAFile = argumentContainer.wasArgProvided("--output-file");
 
     if (isOutputLocationAFile){
         const std::string& outputFileLocation =
@@ -22,7 +21,7 @@ void OutputWriter::writeOutputText(const std::string& outputText){
 }
 
 void OutputWriter::writeToOutputFile
-    (const std::string& outputFileLocation, const std::string& outputText){
+        (const std::string& outputFileLocation, const std::string& outputText){
     std::ofstream fileWriter;
 
     fileWriter.open(outputFileLocation);

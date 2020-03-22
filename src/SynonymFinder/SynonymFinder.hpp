@@ -22,10 +22,14 @@ class SynonymFinder {
         CURL* createCurlSession();
         void setHttpHeaders(CURL* curl);
         void linkResponseString(CURL* curl, std::string* responseString);
-        static size_t writeFunction(char* buffer,
+        
+        static size_t writeFunction(
+            char* buffer,
             size_t sizeOfOneDataItem,
             size_t numberOfDataItems,
-            std::string* data);
+            std::string* data
+        );
+        
         void executeRequest(CURL* curl);
         std::vector<std::string>
             extractSynonymsFromResponse(const std::string& responseString);

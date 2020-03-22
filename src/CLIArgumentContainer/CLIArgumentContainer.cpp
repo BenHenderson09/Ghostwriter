@@ -21,8 +21,7 @@ void CLIArgumentContainer::processInputArgs(const std::string& inputArgs){
     parseInputArgs();
 }
 
-std::string CLIArgumentContainer
-    ::getParsedStringArg(const std::string& nameOfStringArg){
+std::string CLIArgumentContainer::getParsedStringArg(const std::string& nameOfStringArg){
     return this->parsedStringArgs[nameOfStringArg];
 }
 
@@ -34,15 +33,12 @@ bool CLIArgumentContainer::wasArgProvided(const std::string& arg){
     return inputArgs.find(arg) != std::string::npos;
 }
 
-std::string CLIArgumentContainer
-    ::convertDoublePointerArgsToString(char** inputArgs){
+std::string CLIArgumentContainer::convertDoublePointerArgsToString(char** inputArgs){
     std::string argsAsString;
 
     // Iterate over all user-defined inputArgs, which begin at index 1
     for (int i = 1; *(inputArgs+i); i++){
-        if (i != 1){
-            argsAsString += " ";
-        }
+        if (i != 1) argsAsString += " ";
 
         argsAsString += *(inputArgs+i);
     }
@@ -90,47 +86,41 @@ void CLIArgumentContainer::parseStringArgs(){
     }
 }
 
-std::string CLIArgumentContainer
-    ::extractFlagValueFromArgs(const std::string& flag){
+std::string CLIArgumentContainer::extractFlagValueFromArgs(const std::string& flag){
     int indexOfStartOfFlagValue = inputArgs.find(flag) + flag.length() + 1;
 
     checkIfFlagValueIsPresent(indexOfStartOfFlagValue);
 
-    // Uses index of next flag, or simply an npos value if no flags remain
-    int lengthOfFlagValue =
-        inputArgs.find(" --", indexOfStartOfFlagValue)
-        - indexOfStartOfFlagValue;
+    int indexOfEndOfFlagValue = inputArgs.find(" --", indexOfStartOfFlagValue);
+    int lengthOfFlagValue = indexOfEndOfFlagValue - indexOfStartOfFlagValue;
 
-    std::string flagValue =
-        inputArgs.substr(indexOfStartOfFlagValue, lengthOfFlagValue);
+    std::string flagValue = inputArgs.substr(indexOfStartOfFlagValue, lengthOfFlagValue);
 
     return flagValue;
 }
 
-void CLIArgumentContainer
-    ::checkIfFlagValueIsPresent(int indexOfStartOfFlagValue){
+void CLIArgumentContainer::checkIfFlagValueIsPresent(int indexOfStartOfFlagValue){
     bool flagIsLastAndHasNoValue = indexOfStartOfFlagValue > inputArgs.length();
+    std::string flagLeftBlankMessage = "Specified flag value can't be left blank.";
 
-    if (flagIsLastAndHasNoValue){
-        throw std::runtime_error("Specified flag value can't be left blank.");
-    }
+    if (flagIsLastAndHasNoValue)
+        throw std::runtime_error(flagLeftBlankMessage);
 
-    bool flagIsFollowedByAnotherFlag = 
+    bool flagIsFollowedByAnotherFlag =
         inputArgs.substr(indexOfStartOfFlagValue, 2) == "--";
 
-    if (flagIsFollowedByAnotherFlag){
-        throw std::runtime_error("Specified flag value can't be left blank.");
-    }
+    if (flagIsFollowedByAnotherFlag)
+        throw std::runtime_error(flagLeftBlankMessage);
 }
 
-std::vector<std::string> CLIArgumentContainer
-    ::extractFlagsFromConfig(const std::string& type){
+std::vector<std::string> CLIArgumentContainer::extractFlagsFromConfig(const std::string& flagType){
     std::vector<std::string> flags;
 
     for (const auto& item : FlagConfig::FLAG_CONFIGURATIONS.items()){
-        if (FlagConfig::FLAG_CONFIGURATIONS[item.key()]["type"] == type){
-            flags.push_back(item.key());
-        }
+        std::string typeOfFlagInConfig =
+            FlagConfig::FLAG_CONFIGURATIONS[item.key()]["type"];
+        
+        if (typeOfFlagInConfig == flagType) flags.push_back(item.key());
     }
 
     return flags;
@@ -144,11 +134,9 @@ void CLIArgumentContainer::checkIfInputTextHasBeenGivenCorrectly(){
     bool inputFileProvided = wasArgProvided("--input-file");
     bool inputTextProvided = wasArgProvided("--input-text");
 
-    if (!inputFileProvided && !inputTextProvided){
+    if (!inputFileProvided && !inputTextProvided)
         throw std::runtime_error("Input text must be provided.");
-    }
 
-    if (inputFileProvided && inputTextProvided){
+    if (inputFileProvided && inputTextProvided)
         throw std::runtime_error("Only one form of input text permitted.");
-    }
 }

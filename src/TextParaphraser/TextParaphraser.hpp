@@ -26,8 +26,12 @@ class TextParaphraser {
         bool wordRequiresModification(const std::string& word);
         std::thread createWordModificationThread(std::string& word);
         void modifyWord(std::string& word);
-        std::string createMultipleSuggestionsList
-            (const std::vector<std::string>& synonyms, const std::string& word);
+        
+        std::string createMultipleSuggestionsList(
+            const std::vector<std::string>& synonyms,
+            const std::string& word
+        );
+ 
         void formatOutputText(std::vector<std::string> inputTextAsWords);
 };
 

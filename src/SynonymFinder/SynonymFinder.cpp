@@ -11,8 +11,7 @@ SynonymFinder::SynonymFinder(const std::string& word) : word(word) {
 }
 
 void SynonymFinder::buildApiEndpoint(){
-    apiEndpoint =
-        "https://wordsapiv1.p.rapidapi.com/words/" +  word + "/synonyms";
+    apiEndpoint = "https://wordsapiv1.p.rapidapi.com/words/" +  word + "/synonyms";
 }
 
 void SynonymFinder::findSynonymsOfWord(){
@@ -43,11 +42,8 @@ CURL* SynonymFinder::createCurlSession(){
 void SynonymFinder::setHttpHeaders(CURL* curl){
     struct curl_slist *headers = NULL;
 
-    headers =
-        curl_slist_append(headers, WordApiConfig::API_HOST_HEADER.c_str());
-
-    headers =
-        curl_slist_append(headers, WordApiConfig::API_KEY_HEADER.c_str());
+    headers = curl_slist_append(headers, WordApiConfig::API_HOST_HEADER.c_str());
+    headers = curl_slist_append(headers, WordApiConfig::API_KEY_HEADER.c_str());
 
     curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 }
@@ -71,8 +67,8 @@ void SynonymFinder::executeRequest(CURL* curl){
     curl_easy_cleanup(curl);
 }
 
-std::vector<std::string> SynonymFinder
-    ::extractSynonymsFromResponse(const std::string& responseString){
+std::vector<std::string> SynonymFinder::extractSynonymsFromResponse
+        (const std::string& responseString){
     bool isResponseInJsonFormat = responseString[0] == '{';
 
     if (!isResponseInJsonFormat) return {};

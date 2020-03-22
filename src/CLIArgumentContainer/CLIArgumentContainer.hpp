@@ -32,8 +32,7 @@ class CLIArgumentContainer {
         void parseStringArgs();
         std::string extractFlagValueFromArgs(const std::string& args);
         void checkIfFlagValueIsPresent(int indexOfStartOfFlagValue);
-        std::vector<std::string>
-            extractFlagsFromConfig(const std::string& type);
+        std::vector<std::string> extractFlagsFromConfig(const std::string& flagType);
         void checkIfArgsAreValid();
         void checkIfInputTextHasBeenGivenCorrectly();
 };
