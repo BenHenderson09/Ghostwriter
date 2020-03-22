@@ -6,32 +6,32 @@
 #include <thread>
 #include "../CLIArgumentContainer/CLIArgumentContainer.hpp"
 
-class TextParaphraser {
-    public:
-        TextParaphraser(CLIArgumentContainer& argumentContainer);
-
-        std::string outputText;
-
-    private:
-        CLIArgumentContainer& argumentContainer;
-        std::string inputText;
-        bool isOutputLocationAFile;
-
-        void organizeInputText();
-        std::string readInputFile(const std::string& inputFilePath);
-        void determineOutputLocation();
-        void paraphraseText();
-        std::vector<std::string> splitInputTextIntoWords();
-        bool wordRequiresModification(const std::string& word);
-        std::thread createWordModificationThread(std::string& word);
-        void modifyWord(std::string& word);
-        
-        std::string createMultipleSuggestionsList(
-            const std::vector<std::string>& synonyms,
-            const std::string& word
-        );
- 
-        void formatOutputText(std::vector<std::string> inputTextAsWords);
+// "Public" items
+namespace TextParaphraser {
+    std::string paraphraseText(CLIArgumentContainer argumentContainer_);
 };
+
+// "Private" items
+namespace {
+    CLIArgumentContainer argumentContainer;
+    std::string inputText;
+    bool isOutputLocationAFile;
+
+    void organizeInputText();
+    std::string readInputFile(const std::string& inputFilePath);
+    void determineOutputLocation();
+    std::string applySynonymsToInputText();
+    std::vector<std::string> splitInputTextIntoWords();
+    bool wordRequiresModification(const std::string& word);
+    std::thread createWordModificationThread(std::string& word);
+    void modifyWord(std::string& word);
+    
+    std::string createMultipleSuggestionsList(
+        const std::vector<std::string>& synonyms,
+        const std::string& word
+    );
+
+    std::string formatOutputText(const std::vector<std::string>& inputTextAsWords);
+}
 
 #endif

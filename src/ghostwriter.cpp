@@ -6,14 +6,13 @@
 int main(int argc, char** argv){
     try {
         CLIArgumentContainer argumentContainer(argv);
+        std::string outputText = TextParaphraser::paraphraseText(argumentContainer);
 
-        TextParaphraser paraphraser(argumentContainer);
-
-        OutputWriter writer(argumentContainer);
-        writer.writeOutputText(paraphraser.outputText);
+        OutputWriter::writeOutputText(argumentContainer, outputText);
     }
     catch(std::exception& e){
         std::cerr << e.what() << "\n";
+
         return EXIT_FAILURE;
     }
 

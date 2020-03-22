@@ -11,7 +11,7 @@ CLIArgumentContainer::CLIArgumentContainer(char** inputArgs){
     processInputArgs(convertDoublePointerArgsToString(inputArgs));
 }
 
-std::string CLIArgumentContainer::getInputArgs(){
+std::string CLIArgumentContainer::getInputArgs() const {
     return inputArgs;
 }
 
@@ -21,15 +21,15 @@ void CLIArgumentContainer::processInputArgs(const std::string& inputArgs){
     parseInputArgs();
 }
 
-std::string CLIArgumentContainer::getParsedStringArg(const std::string& nameOfStringArg){
-    return this->parsedStringArgs[nameOfStringArg];
+std::string CLIArgumentContainer::getParsedStringArg(const std::string& nameOfStringArg) const {
+    return this->parsedStringArgs.at(nameOfStringArg);
 }
 
-bool CLIArgumentContainer::getParsedBoolArg(const std::string& nameOfBoolArg){
-    return this->parsedBoolArgs[nameOfBoolArg];
+bool CLIArgumentContainer::getParsedBoolArg(const std::string& nameOfBoolArg) const {
+    return this->parsedBoolArgs.at(nameOfBoolArg);
 }
 
-bool CLIArgumentContainer::wasArgProvided(const std::string& arg){
+bool CLIArgumentContainer::wasArgProvided(const std::string& arg) const {
     return inputArgs.find(arg) != std::string::npos;
 }
 

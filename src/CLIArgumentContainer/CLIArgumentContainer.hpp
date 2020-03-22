@@ -8,16 +8,17 @@
 
 class CLIArgumentContainer {
     public:
-        CLIArgumentContainer(const std::string& args);
-        CLIArgumentContainer(char** args);
+        CLIArgumentContainer(const std::string& inputArgs);
+        CLIArgumentContainer(char** inputArgs);
+        CLIArgumentContainer() = default;
 
-        std::string getInputArgs();
-        void processInputArgs(const std::string& args);
+        std::string getInputArgs() const;
+        void processInputArgs(const std::string& inputArgs);
 
-        std::string getParsedStringArg(const std::string& nameOfStringArg);
-        bool getParsedBoolArg(const std::string& nameOfBoolArg);
+        std::string getParsedStringArg(const std::string& nameOfStringArg) const;
+        bool getParsedBoolArg(const std::string& nameOfBoolArg) const;
 
-        bool wasArgProvided(const std::string& nameOfArg);
+        bool wasArgProvided(const std::string& nameOfArg) const;
 
     private:
         std::string inputArgs;

@@ -8,134 +8,135 @@
 #include "../CLIArgumentContainer/CLIArgumentContainer.hpp"
 #include "../SynonymFinder/SynonymFinder.hpp"
 
-TextParaphraser::TextParaphraser(CLIArgumentContainer& argumentContainer)
-    : argumentContainer(argumentContainer){
+std::string TextParaphraser::paraphraseText(CLIArgumentContainer argumentContainer_){
+    argumentContainer = argumentContainer_;
     organizeInputText();
-    paraphraseText();
-}
-
-void TextParaphraser::organizeInputText(){
-    bool isInputTextProvidedAsArgument =
-        argumentContainer.wasArgProvided("--input-text");
-
-    if (isInputTextProvidedAsArgument){
-        inputText =
-            argumentContainer.getParsedStringArg("--input-text");
-    }
-    else {
-        std::string inputFilePath =
-            argumentContainer.getParsedStringArg("--input-file");
-
-        inputText = readInputFile(inputFilePath);
-    }
-}
-
-std::string TextParaphraser::readInputFile(const std::string& inputFilePath){
-    std::ifstream inputFileReader;
-    std::string inputFileText;
-
-    inputFileReader.open(inputFilePath);
     
-    if (!inputFileReader.is_open()){
-        throw std::runtime_error("Can not open input file.");
-    }
-
-    for (int i = 0; !inputFileReader.eof(); i++){
-        std::string line;
-        getline(inputFileReader, line);
-
-        inputFileText += (i == 0 ? line : "\n" + line);
-    }
-
-    inputFileReader.close();
-
-    return inputFileText;
+    return applySynonymsToInputText();
 }
 
-void TextParaphraser::paraphraseText(){
-    std::vector<std::string> inputTextAsWords = splitInputTextIntoWords();
-    std::vector<std::thread> wordModificationThreads;
+namespace {
+    void organizeInputText(){
+        bool isInputTextProvidedAsArgument = argumentContainer.wasArgProvided("--input-text");
 
-    for (std::string& word : inputTextAsWords){
-        if (wordRequiresModification(word)){
-            wordModificationThreads.push_back(
-                createWordModificationThread(word)
-            );
+        if (isInputTextProvidedAsArgument){
+            inputText = argumentContainer.getParsedStringArg("--input-text");
+        }
+        else {
+            std::string inputFilePath = argumentContainer.getParsedStringArg("--input-file");
+
+            inputText = readInputFile(inputFilePath);
         }
     }
 
-    for (std::thread& thread : wordModificationThreads){
-        thread.join();
+    std::string readInputFile(const std::string& inputFilePath){
+        std::ifstream inputFileReader;
+        std::string inputFileText;
+
+        inputFileReader.open(inputFilePath);
+        
+        if (!inputFileReader.is_open()){
+            throw std::runtime_error("Can not open input file.");
+        }
+
+        for (int i = 0; !inputFileReader.eof(); i++){
+            std::string line;
+            getline(inputFileReader, line);
+
+            inputFileText += (i == 0 ? line : "\n" + line);
+        }
+
+        inputFileReader.close();
+
+        return inputFileText;
     }
 
-    formatOutputText(inputTextAsWords);
-}
+    std::string applySynonymsToInputText(){
+        std::vector<std::string> inputTextAsWords = splitInputTextIntoWords();
+        std::vector<std::thread> wordModificationThreads;
 
-std::thread TextParaphraser::createWordModificationThread(std::string& word){
-    std::thread wordModificationThread(
-        &TextParaphraser::modifyWord,
-        this,
-        std::ref(word)
-    );
+        for (std::string& word : inputTextAsWords){
+            if (wordRequiresModification(word)){
+                wordModificationThreads.push_back(
+                    createWordModificationThread(word)
+                );
+            }
+        }
 
-    return wordModificationThread;
-}
+        for (std::thread& thread : wordModificationThreads){
+            thread.join();
+        }
 
-bool TextParaphraser::wordRequiresModification(const std::string& word){
-    if (word.length() <= 3){
-        return false;
+        return formatOutputText(inputTextAsWords);
     }
 
-    return true;
-}
+    std::thread createWordModificationThread(std::string& word){
+        std::thread wordModificationThread(
+            &modifyWord,
+            std::ref(word)
+        );
 
-std::vector<std::string> TextParaphraser::splitInputTextIntoWords(){
-    std::vector<std::string> words;
-
-    std::stringstream ss(inputText);
-    std::string buffer;
-
-    while(ss >> buffer){
-        words.push_back(buffer);
+        return wordModificationThread;
     }
 
-    return words;
-}
+    bool wordRequiresModification(const std::string& word){
+        if (word.length() <= 3){
+            return false;
+        }
 
-void TextParaphraser::modifyWord(std::string& word){
-    SynonymFinder synonymFinder(word);
-    
-    std::vector<std::string> synonyms = synonymFinder.synonyms;
-    
-    bool areMultipleSuggestionsProvided =
-        argumentContainer.getParsedBoolArg("--multiple-suggestions");
-
-    if (areMultipleSuggestionsProvided){
-        word = createMultipleSuggestionsList(synonyms, word);
-    }
-    else {
-        word = (synonyms.size() == 0 ? word : synonyms.at(0));
-    }
-}
-
-std::string TextParaphraser::createMultipleSuggestionsList
-        (const std::vector<std::string>& synonyms, const std::string& word){
-    std::string suggestionsList = "(";
-
-    for (const std::string& suggestion : synonyms){
-        suggestionsList += suggestion + "/";
+        return true;
     }
 
-    suggestionsList += word; // Include original word as a suggestion
-    suggestionsList += ")";
+    std::vector<std::string> splitInputTextIntoWords(){
+        std::vector<std::string> words;
 
-    return suggestionsList;
-}
+        std::stringstream ss(inputText);
+        std::string buffer;
 
-void TextParaphraser::formatOutputText(std::vector<std::string> inputTextAsWords){
-    for (std::string word : inputTextAsWords){
-        outputText += word + " ";
+        while(ss >> buffer){
+            words.push_back(buffer);
+        }
+
+        return words;
     }
 
-    outputText.pop_back(); // Remove trailing backslash
+    void modifyWord(std::string& word){
+        std::vector<std::string> synonyms = SynonymFinder::findSynonymsOfWord(word);
+        
+        bool areMultipleSuggestionsProvided =
+            argumentContainer.wasArgProvided("--multiple-suggestions");
+
+        if (areMultipleSuggestionsProvided){
+            word = createMultipleSuggestionsList(synonyms, word);
+        }
+        else {
+            word = (synonyms.size() == 0 ? word : synonyms.at(0));
+        }
+    }
+
+    std::string createMultipleSuggestionsList
+            (const std::vector<std::string>& synonyms, const std::string& word){
+        std::string suggestionsList = "(";
+
+        for (const std::string& suggestion : synonyms){
+            suggestionsList += suggestion + "/";
+        }
+
+        suggestionsList += word; // Include original word as a suggestion
+        suggestionsList += ")";
+
+        return suggestionsList;
+    }
+
+    std::string formatOutputText(const std::vector<std::string>& inputTextAsWords){
+        std::string outputText;
+        
+        for (std::string word : inputTextAsWords){
+            outputText += word + " ";
+        }
+
+        outputText.pop_back(); // Remove trailing backslash
+        return outputText;
+    }
 }
+

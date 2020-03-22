@@ -4,20 +4,17 @@
 #include <string>
 #include "../CLIArgumentContainer/CLIArgumentContainer.hpp"
 
-class OutputWriter {
-    public:
-        OutputWriter(CLIArgumentContainer& argumentContainer);
-        void writeOutputText(const std::string& outputText);
+// "Public" items
+namespace OutputWriter {
+    void writeOutputText(const CLIArgumentContainer& argumentContainer, std::string outputText_);
+}
 
-    private:
-        CLIArgumentContainer& argumentContainer;
+// "Private" items
+namespace {
+    std::string outputText;
 
-        void writeToOutputFile(
-            const std::string& outputFileLocation,
-            const std::string& outputText
-        );
-        
-        void writeToConsole(const std::string& outputText);
-};
+    void writeToOutputFile(const std::string& outputFileLocation);
+    void writeToConsole();
+}
 
 #endif
