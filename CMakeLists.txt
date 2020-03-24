@@ -1,13 +1,13 @@
 project(ghostwriter)
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.12)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED true)
 
 # Setup third party libs
-set(nlohmann_json_DIR lib/json/lib/cmake/nlohmann_json)
+set(nlohmann_json_DIR deps/nlohmann_json/lib/cmake/nlohmann_json)
 find_package(nlohmann_json 3.2.0 REQUIRED)
 
-set(CURL_DIR lib/curl/lib/cmake/CURL)
+set(CURL_DIR deps/CURL/lib/cmake/CURL)
 find_package(CURL 7.4.0 REQUIRED)
 
 # Setup header files
@@ -42,3 +42,6 @@ target_link_libraries(ghostwriter PRIVATE curl)
 
 # Install config
 install(TARGETS ghostwriter DESTINATION bin)
+
+# Tests
+add_subdirectory(tests)

@@ -6,7 +6,7 @@
 namespace FlagConfig {
     const nlohmann::json FLAG_CONFIGURATIONS = {
         {
-        "--input-text", {
+            "--input-text", {
                 {"flagName", "inputText"},
                 {"type", "string"}
             }
