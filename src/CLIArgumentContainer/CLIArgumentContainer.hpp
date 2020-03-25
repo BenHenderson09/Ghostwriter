@@ -27,7 +27,7 @@ class CLIArgumentContainer {
 
         void clearPreviouslyParsedArgs();
         void parseInputArgs();
-        std::string convertDoublePointerArgsToString(char** args);
+        std::string convertCStringArgsToString(char** args);
         void parseBoolArgs();
         void parseStringArgs();
         std::string extractFlagValueFromArgs(const std::string& args);

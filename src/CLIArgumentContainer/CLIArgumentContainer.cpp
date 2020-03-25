@@ -8,7 +8,7 @@ CLIArgumentContainer::CLIArgumentContainer(const std::string& inputArgs){
 }
 
 CLIArgumentContainer::CLIArgumentContainer(char** inputArgs){
-    processInputArgs(convertDoublePointerArgsToString(inputArgs));
+    processInputArgs(convertCStringArgsToString(inputArgs));
 }
 
 std::string CLIArgumentContainer::getInputArgs() const {
@@ -33,7 +33,7 @@ bool CLIArgumentContainer::wasArgProvided(const std::string& arg) const {
     return inputArgs.find(arg) != std::string::npos;
 }
 
-std::string CLIArgumentContainer::convertDoublePointerArgsToString(char** inputArgs){
+std::string CLIArgumentContainer::convertCStringArgsToString(char** inputArgs){
     std::string argsAsString;
 
     // Iterate over all user-defined inputArgs, which begin at index 1
