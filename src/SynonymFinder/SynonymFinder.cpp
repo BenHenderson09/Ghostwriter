@@ -3,7 +3,7 @@
 #include <string>
 #include <curl/curl.h>
 #include "SynonymFinder.hpp"
-#include "../util/JSONUtils/ObjectHasKey.hpp"
+#include "../util/JSONObjectHasKey/JSONObjectHasKey.hpp"
 
 std::vector<std::string> SynonymFinder::findSynonymsOfWord(const std::string& word){
     std::string responseString = queryApiForSynonyms(buildApiEndpoint(word));
@@ -72,7 +72,7 @@ namespace {
         nlohmann::json jsonResponse = nlohmann::json::parse(responseString);
 
         bool doesResponseIncludeSynonyms = 
-            JSONUtils::objectHasKey(jsonResponse, "synonyms");    
+            JSONObjectHasKey(jsonResponse, "synonyms");    
 
         if (doesResponseIncludeSynonyms){
             nlohmann::json synonyms = jsonResponse["synonyms"];

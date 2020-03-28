@@ -16,8 +16,9 @@ set(HEADER_FILES
     src/TextParaphraser/TextParaphraser.hpp
     src/SynonymFinder/SynonymFinder.hpp
     src/OutputWriter/OutputWriter.hpp
-    src/util/JSONUtils/ObjectHasKey.hpp
-    src/config/FlagConfig.hpp)
+    src/config/FlagConfig.hpp
+    src/util/JSONObjectHasKey/JSONObjectHasKey.hpp
+    src/util/readFile/readFile.hpp)
 
 # Setup source files
 set(SOURCE_FILES 
@@ -26,7 +27,8 @@ set(SOURCE_FILES
     src/SynonymFinder/SynonymFinder.cpp
     src/TextParaphraser/TextParaphraser.cpp
     src/OutputWriter/OutputWriter.cpp
-    src/util/JSONUtils/ObjectHasKey.cpp)
+    src/util/JSONObjectHasKey/JSONObjectHasKey.cpp
+    src/util/readFile/readFile.cpp)
 
 # Create executable "ghostwriter"
 add_executable(ghostwriter ${SOURCE_FILES} ${HEADER_FILES})

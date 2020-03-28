@@ -1,5 +1,5 @@
-#ifndef WORDAPICONFIG_HPP
-#define WORDAPICONFIG_HPP
+#ifndef WORD_API_CONFIG_HPP
+#define WORD_API_CONFIG_HPP
 
 #include <string>
 

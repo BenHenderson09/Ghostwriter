@@ -1,5 +1,5 @@
-#ifndef CLIARGUMENTCONTAINER_HPP
-#define CLIARGUMENTCONTAINER_HPP
+#ifndef CLI_ARGUMENT_CONTAINER_HPP
+#define CLI_ARGUMENT_CONTAINER_HPP
 
 #include <map>
 #include <string>

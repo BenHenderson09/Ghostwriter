@@ -1,5 +1,5 @@
-#ifndef TEXTPARAPHRASER_HPP
-#define TEXTPARAPHRASER_HPP
+#ifndef TEXT_PARAPHRASER_HPP
+#define TEXT_PARAPHRASER_HPP
 
 #include <string>
 #include <vector>
@@ -18,7 +18,6 @@ namespace {
     bool isOutputLocationAFile;
 
     void organizeInputText();
-    std::string readInputFile(const std::string& inputFilePath);
     void determineOutputLocation();
     std::string applySynonymsToInputText();
     std::vector<std::string> splitInputTextIntoWords();

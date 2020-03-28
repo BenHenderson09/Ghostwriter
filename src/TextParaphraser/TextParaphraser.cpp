@@ -1,5 +1,4 @@
 #include <iostream>
-#include <fstream>
 #include <sstream>
 #include <vector>
 #include <thread>
@@ -7,6 +6,7 @@
 #include "TextParaphraser.hpp"
 #include "../CLIArgumentContainer/CLIArgumentContainer.hpp"
 #include "../SynonymFinder/SynonymFinder.hpp"
+#include "../util/readFile/readFile.hpp"
 
 std::string TextParaphraser::paraphraseText(CLIArgumentContainer argumentContainer_){
     argumentContainer = argumentContainer_;
@@ -25,30 +25,8 @@ namespace {
         else {
             std::string inputFilePath = argumentContainer.getParsedStringArg("--input-file");
 
-            inputText = readInputFile(inputFilePath);
+            inputText = readFile(inputFilePath);
         }
-    }
-
-    std::string readInputFile(const std::string& inputFilePath){
-        std::ifstream inputFileReader;
-        std::string inputFileText;
-
-        inputFileReader.open(inputFilePath);
-        
-        if (!inputFileReader.is_open()){
-            throw std::runtime_error("Can not open input file.");
-        }
-
-        for (int i = 0; !inputFileReader.eof(); i++){
-            std::string line;
-            getline(inputFileReader, line);
-
-            inputFileText += (i == 0 ? line : "\n" + line);
-        }
-
-        inputFileReader.close();
-
-        return inputFileText;
     }
 
     std::string applySynonymsToInputText(){

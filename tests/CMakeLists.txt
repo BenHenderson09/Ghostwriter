@@ -5,7 +5,9 @@ find_package(Catch2 REQUIRED)
 # Setup test files
 set(TEST_FILES 
     tests.cpp
-    CLIArgumentContainerTests.cpp)
+    CLIArgumentContainerTests/CLIArgumentContainerTests.cpp
+    TextParaphraserTests/TextParaphraserTests.cpp
+    util/createDummyCLIArgContainer/createDummyCLIArgContainer.cpp)
 
 # Setup source files
 set(SOURCE_FILES_FOR_TESTING ${SOURCE_FILES})
@@ -15,6 +17,8 @@ list(TRANSFORM SOURCE_FILES_FOR_TESTING PREPEND ../)
 # Setup header files
 set(HEADER_FILES_FOR_TESTING ${HEADER_FILES})
 list(TRANSFORM HEADER_FILES_FOR_TESTING PREPEND ../)
+list(APPEND HEADER_FILES_FOR_TESTING 
+        util/createDummyCLIArgContainer/createDummyCLIArgContainer.hpp)
 
 # Create executable "tests"
 add_executable(tests ${TEST_FILES} ${SOURCE_FILES_FOR_TESTING} ${HEADER_FILES_FOR_TESTING})
