@@ -8,24 +8,39 @@
 #include "../SynonymFinder/SynonymFinder.hpp"
 #include "../util/readFile/readFile.hpp"
 
-std::string TextParaphraser::paraphraseText(CLIArgumentContainer argumentContainer_){
-    argumentContainer = argumentContainer_;
-    organizeInputText();
-    
-    return applySynonymsToInputText();
-}
-
 namespace {
+    // Variables
+    CLIArgumentContainer argumentContainer_;
+    std::string inputText_;
+    bool isOutputLocationAFile_;
+
+    // Prototypes
+    void organizeInputText();
+    void determineOutputLocation();
+    std::string applySynonymsToInputText();
+    std::vector<std::string> splitInputTextIntoWords();
+    bool wordRequiresModification(const std::string& word);
+    std::thread createWordModificationThread(std::string& word);
+    void modifyWord(std::string& word);
+    
+    std::string createMultipleSuggestionsList(
+        const std::vector<std::string>& synonyms,
+        const std::string& word
+    );
+
+    std::string formatOutputText(const std::vector<std::string>& inputTextAsWords);
+
+    // Implementation
     void organizeInputText(){
-        bool isInputTextProvidedAsArgument = argumentContainer.wasArgProvided("--input-text");
+        bool isInputTextProvidedAsArgument = argumentContainer_.wasArgProvided("--input-text");
 
         if (isInputTextProvidedAsArgument){
-            inputText = argumentContainer.getParsedStringArg("--input-text");
+            inputText_ = argumentContainer_.getParsedStringArg("--input-text");
         }
         else {
-            std::string inputFilePath = argumentContainer.getParsedStringArg("--input-file");
+            std::string inputFilePath = argumentContainer_.getParsedStringArg("--input-file");
 
-            inputText = readFile(inputFilePath);
+            inputText_ = readFile(inputFilePath);
         }
     }
 
@@ -68,7 +83,7 @@ namespace {
     std::vector<std::string> splitInputTextIntoWords(){
         std::vector<std::string> words;
 
-        std::stringstream ss(inputText);
+        std::stringstream ss(inputText_);
         std::string buffer;
 
         while(ss >> buffer){
@@ -82,7 +97,7 @@ namespace {
         std::vector<std::string> synonyms = SynonymFinder::findSynonymsOfWord(word);
         
         bool areMultipleSuggestionsProvided =
-            argumentContainer.wasArgProvided("--multiple-suggestions");
+            argumentContainer_.wasArgProvided("--multiple-suggestions");
 
         if (areMultipleSuggestionsProvided){
             word = createMultipleSuggestionsList(synonyms, word);
@@ -118,3 +133,9 @@ namespace {
     }
 }
 
+std::string TextParaphraser::paraphraseText(CLIArgumentContainer argumentContainer){
+    argumentContainer_ = argumentContainer;
+    organizeInputText();
+    
+    return applySynonymsToInputText();
+}

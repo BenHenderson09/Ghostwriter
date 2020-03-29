@@ -6,31 +6,8 @@
 #include <thread>
 #include "../CLIArgumentContainer/CLIArgumentContainer.hpp"
 
-// "Public" items
 namespace TextParaphraser {
-    std::string paraphraseText(CLIArgumentContainer argumentContainer_);
+    std::string paraphraseText(CLIArgumentContainer argumentContainer);
 };
-
-// "Private" items
-namespace {
-    CLIArgumentContainer argumentContainer;
-    std::string inputText;
-    bool isOutputLocationAFile;
-
-    void organizeInputText();
-    void determineOutputLocation();
-    std::string applySynonymsToInputText();
-    std::vector<std::string> splitInputTextIntoWords();
-    bool wordRequiresModification(const std::string& word);
-    std::thread createWordModificationThread(std::string& word);
-    void modifyWord(std::string& word);
-    
-    std::string createMultipleSuggestionsList(
-        const std::vector<std::string>& synonyms,
-        const std::string& word
-    );
-
-    std::string formatOutputText(const std::vector<std::string>& inputTextAsWords);
-}
 
 #endif

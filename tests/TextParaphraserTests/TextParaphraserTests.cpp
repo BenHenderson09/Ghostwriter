@@ -8,6 +8,10 @@
 #include "../util/createDummyCLIArgContainer/createDummyCLIArgContainer.hpp"
 #include "../../src/util/readFile/readFile.hpp"
 
+TEST_CASE("a"){
+    REQUIRE(true);
+}
+
 std::vector<std::string> splitTextIntoEachSetOfSuggestions(std::string text){
     std::vector<std::string> sections;
 
