@@ -28,7 +28,7 @@ namespace {
 }
 
 void writeOutputText
-        (const CLIArgumentContainer& argumentContainer, std::string outputText){
+        (const CLIArgumentContainer& argumentContainer, const std::string& outputText){
     outputText_ = outputText;
     bool isOutputLocationAFile = argumentContainer.wasArgProvided("--output-file");
 

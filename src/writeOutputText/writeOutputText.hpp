@@ -4,6 +4,6 @@
 #include <string>
 #include "../CLIArgumentContainer/CLIArgumentContainer.hpp"
 
-void writeOutputText(const CLIArgumentContainer& argumentContainer, std::string outputText);
+void writeOutputText(const CLIArgumentContainer& argumentContainer, const std::string& outputText);
 
 #endif

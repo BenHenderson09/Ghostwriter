@@ -10,7 +10,7 @@ int main(int argc, char** argv){
 
         writeOutputText(argumentContainer, outputText);
     }
-    catch(std::exception& e){
+    catch(const std::exception& e){
         std::cerr << e.what() << "\n";
 
         return EXIT_FAILURE;

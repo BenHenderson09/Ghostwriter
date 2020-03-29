@@ -17,7 +17,7 @@ as a replacement for the original word.
  3. `cmake .. && make install`
  
  **Note:** As of yet, an API key for the [WordsAPI](https://www.wordsapi.com/) must be inserted
- [here](https://github.com/BenHenderson09/Ghostwriter/blob/master/src/config/WordApiConfig.hpp#L10).
+ [here](https://github.com/BenHenderson09/Ghostwriter/blob/master/config/WordApiConfig.hpp#L10).
  
  ## Flags
 | Flag                     | Type          | Description                                           |

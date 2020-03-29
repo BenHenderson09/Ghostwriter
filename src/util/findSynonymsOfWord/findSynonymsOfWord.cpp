@@ -3,7 +3,7 @@
 #include <curl/curl.h>
 #include "findSynonymsOfWord.hpp"
 #include "../JSONObjectHasKey/JSONObjectHasKey.hpp"
-#include "../../config/WordApiConfig.hpp"
+#include "../../../config/WordApiConfig.hpp"
 
 namespace {
     // Prototypes

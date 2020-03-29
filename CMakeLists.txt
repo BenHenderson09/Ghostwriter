@@ -16,7 +16,7 @@ set(HEADER_FILES
     src/paraphraseText/paraphraseText.hpp
     src/util/findSynonymsOfWord/findSynonymsOfWord.hpp
     src/writeOutputText/writeOutputText.hpp
-    src/config/FlagConfig.hpp
+    config/FlagConfig.hpp
     src/util/JSONObjectHasKey/JSONObjectHasKey.hpp
     src/util/readFile/readFile.hpp)
 
