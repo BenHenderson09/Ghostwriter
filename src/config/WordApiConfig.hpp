@@ -8,7 +8,7 @@ namespace WordApiConfig {
         "x-rapidapi-host: wordsapiv1.p.rapidapi.com";
         
     const std::string API_KEY_HEADER =
-        "x-rapidapi-key: <YOUR API KEY HERE>";
+        "x-rapidapi-key: <YOUR API KEY>";
 }
 
 #endif

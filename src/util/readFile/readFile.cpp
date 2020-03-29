@@ -3,10 +3,10 @@
 
 namespace {
     void checkForFileReadingErrors(const std::ifstream& inputFileReader){
-    if (!inputFileReader.is_open()){
-        throw std::runtime_error("Can not open input file.");
+        if (!inputFileReader.is_open()){
+            throw std::runtime_error("Can not open input file.");
+        }
     }
-}
 
     std::string extractInputFileContents(std::ifstream& inputFileReader){
         std::string contents;

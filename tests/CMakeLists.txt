@@ -7,6 +7,7 @@ set(TEST_FILES
     tests.cpp
     CLIArgumentContainerTests/CLIArgumentContainerTests.cpp
     paraphraseTextTests/paraphraseTextTests.cpp
+    writeOutputTextTests/writeOutputTextTests.cpp
     util/createDummyCLIArgContainer/createDummyCLIArgContainer.cpp)
 
 # Setup source files
