@@ -1,10 +1,9 @@
 #ifndef CLI_ARGUMENT_CONTAINER_HPP
 #define CLI_ARGUMENT_CONTAINER_HPP
 
-#include <map>
 #include <string>
 #include <vector>
-#include "../config/FlagConfig.hpp"
+#include <map>
 
 class CLIArgumentContainer {
     public:

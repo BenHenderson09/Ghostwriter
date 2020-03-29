@@ -1,3 +1,4 @@
+#include <string>
 #include <catch2/catch.hpp>
 #include "../../src/writeOutputText/writeOutputText.hpp"
 #include "../util/createDummyCLIArgContainer/createDummyCLIArgContainer.hpp"

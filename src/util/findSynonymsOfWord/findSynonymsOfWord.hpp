@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <string>
-#include "../../config/WordApiConfig.hpp"
 
 std::vector<std::string> findSynonymsOfWord(const std::string& word);
 

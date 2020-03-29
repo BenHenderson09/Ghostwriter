@@ -1,6 +1,7 @@
-#include <iostream>
 #include <string>
 #include <vector>
+#include <map>
+#include "../config/FlagConfig.hpp"
 #include "CLIArgumentContainer.hpp"
 
 CLIArgumentContainer::CLIArgumentContainer(const std::string& inputArgs){
