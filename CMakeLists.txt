@@ -13,9 +13,9 @@ find_package(CURL 7.4.0 REQUIRED)
 # Setup header files
 set(HEADER_FILES
     src/CLIArgumentContainer/CLIArgumentContainer.hpp
-    src/TextParaphraser/TextParaphraser.hpp
-    src/SynonymFinder/SynonymFinder.hpp
-    src/OutputWriter/OutputWriter.hpp
+    src/paraphraseText/paraphraseText.hpp
+    src/util/findSynonymsOfWord/findSynonymsOfWord.hpp
+    src/writeOutputText/writeOutputText.hpp
     src/config/FlagConfig.hpp
     src/util/JSONObjectHasKey/JSONObjectHasKey.hpp
     src/util/readFile/readFile.hpp)
@@ -24,9 +24,9 @@ set(HEADER_FILES
 set(SOURCE_FILES 
     src/ghostwriter.cpp 
     src/CLIArgumentContainer/CLIArgumentContainer.cpp
-    src/SynonymFinder/SynonymFinder.cpp
-    src/TextParaphraser/TextParaphraser.cpp
-    src/OutputWriter/OutputWriter.cpp
+    src/util/findSynonymsOfWord/findSynonymsOfWord.cpp
+    src/paraphraseText/paraphraseText.cpp
+    src/writeOutputText/writeOutputText.cpp
     src/util/JSONObjectHasKey/JSONObjectHasKey.cpp
     src/util/readFile/readFile.cpp)
 

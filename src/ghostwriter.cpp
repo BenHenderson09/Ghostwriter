@@ -1,14 +1,14 @@
 #include <iostream>
 #include "CLIArgumentContainer/CLIArgumentContainer.hpp"
-#include "TextParaphraser/TextParaphraser.hpp"
-#include "OutputWriter/OutputWriter.hpp"
+#include "paraphraseText/paraphraseText.hpp"
+#include "writeOutputText/writeOutputText.hpp"
 
 int main(int argc, char** argv){
     try {
         CLIArgumentContainer argumentContainer(argv);
-        std::string outputText = TextParaphraser::paraphraseText(argumentContainer);
+        std::string outputText = paraphraseText(argumentContainer);
 
-        OutputWriter::writeOutputText(argumentContainer, outputText);
+        writeOutputText(argumentContainer, outputText);
     }
     catch(std::exception& e){
         std::cerr << e.what() << "\n";

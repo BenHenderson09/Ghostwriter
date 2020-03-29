@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-#include "OutputWriter.hpp"
+#include "writeOutputText.hpp"
 #include "../CLIArgumentContainer/CLIArgumentContainer.hpp"
 
 namespace {
@@ -27,7 +27,7 @@ namespace {
     }
 }
 
-void OutputWriter::writeOutputText
+void writeOutputText
         (const CLIArgumentContainer& argumentContainer, std::string outputText){
     outputText_ = outputText;
     bool isOutputLocationAFile = argumentContainer.wasArgProvided("--output-file");

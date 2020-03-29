@@ -6,7 +6,7 @@ find_package(Catch2 REQUIRED)
 set(TEST_FILES 
     tests.cpp
     CLIArgumentContainerTests/CLIArgumentContainerTests.cpp
-    TextParaphraserTests/TextParaphraserTests.cpp
+    paraphraseTextTests/paraphraseTextTests.cpp
     util/createDummyCLIArgContainer/createDummyCLIArgContainer.cpp)
 
 # Setup source files

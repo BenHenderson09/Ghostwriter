@@ -1,23 +1,25 @@
 #include <fstream>
 #include "readFile.hpp"
 
-void checkForFileReadingErrors(const std::ifstream& inputFileReader){
+namespace {
+    void checkForFileReadingErrors(const std::ifstream& inputFileReader){
     if (!inputFileReader.is_open()){
         throw std::runtime_error("Can not open input file.");
     }
 }
 
-std::string extractInputFileContents(std::ifstream& inputFileReader){
-    std::string contents;
+    std::string extractInputFileContents(std::ifstream& inputFileReader){
+        std::string contents;
 
-    for (int i = 0; !inputFileReader.eof(); i++){
-        std::string line;
-        getline(inputFileReader, line);
+        for (int i = 0; !inputFileReader.eof(); i++){
+            std::string line;
+            getline(inputFileReader, line);
 
-        contents += (i == 0 ? line : "\n" + line);
+            contents += (i == 0 ? line : "\n" + line);
+        }
+
+        return contents;
     }
-
-    return contents;
 }
 
 std::string readFile(const std::string& inputFilePath){

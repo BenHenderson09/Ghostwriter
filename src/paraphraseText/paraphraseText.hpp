@@ -6,8 +6,6 @@
 #include <thread>
 #include "../CLIArgumentContainer/CLIArgumentContainer.hpp"
 
-namespace TextParaphraser {
-    std::string paraphraseText(CLIArgumentContainer argumentContainer);
-};
+std::string paraphraseText(CLIArgumentContainer argumentContainer);
 
 #endif

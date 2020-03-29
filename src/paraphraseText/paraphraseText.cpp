@@ -3,9 +3,9 @@
 #include <vector>
 #include <thread>
 #include <curl/curl.h>
-#include "TextParaphraser.hpp"
+#include "paraphraseText.hpp"
 #include "../CLIArgumentContainer/CLIArgumentContainer.hpp"
-#include "../SynonymFinder/SynonymFinder.hpp"
+#include "../util/findSynonymsOfWord/findSynonymsOfWord.hpp"
 #include "../util/readFile/readFile.hpp"
 
 namespace {
@@ -94,7 +94,7 @@ namespace {
     }
 
     void modifyWord(std::string& word){
-        std::vector<std::string> synonyms = SynonymFinder::findSynonymsOfWord(word);
+        std::vector<std::string> synonyms = findSynonymsOfWord(word);
         
         bool areMultipleSuggestionsProvided =
             argumentContainer_.wasArgProvided("--multiple-suggestions");
@@ -133,7 +133,7 @@ namespace {
     }
 }
 
-std::string TextParaphraser::paraphraseText(CLIArgumentContainer argumentContainer){
+std::string paraphraseText(CLIArgumentContainer argumentContainer){
     argumentContainer_ = argumentContainer;
     organizeInputText();
     

@@ -2,8 +2,8 @@
 #include <vector>
 #include <string>
 #include <curl/curl.h>
-#include "SynonymFinder.hpp"
-#include "../util/JSONObjectHasKey/JSONObjectHasKey.hpp"
+#include "findSynonymsOfWord.hpp"
+#include "../JSONObjectHasKey/JSONObjectHasKey.hpp"
 
 namespace {
     // Prototypes
@@ -97,7 +97,7 @@ namespace {
     }
 }
 
-std::vector<std::string> SynonymFinder::findSynonymsOfWord(const std::string& word){
+std::vector<std::string> findSynonymsOfWord(const std::string& word){
     std::string responseString = queryApiForSynonyms(buildApiEndpoint(word));
 
     return extractSynonymsFromResponse(responseString);
