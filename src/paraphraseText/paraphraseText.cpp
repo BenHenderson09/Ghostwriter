@@ -3,13 +3,13 @@
 #include <thread>
 #include <curl/curl.h>
 #include "paraphraseText.hpp"
-#include "../CLIArgumentContainer/CLIArgumentContainer.hpp"
+#include "../CLIArgumentHolder/CLIArgumentHolder.hpp"
 #include "../util/findSynonymsOfWord/findSynonymsOfWord.hpp"
 #include "../util/readFile/readFile.hpp"
 
 namespace {
     // Variables
-    CLIArgumentContainer argumentContainer_;
+    CLIArgumentHolder arguments_;
     std::string inputText_;
     bool isOutputLocationAFile_;
 
@@ -31,13 +31,13 @@ namespace {
 
     // Implementation
     void organizeInputText(){
-        bool isInputTextProvidedAsArgument = argumentContainer_.wasArgProvided("--input-text");
+        bool isInputTextProvidedAsArgument = arguments_.wasArgProvided("--input-text");
 
         if (isInputTextProvidedAsArgument){
-            inputText_ = argumentContainer_.getParsedStringArg("--input-text");
+            inputText_ = arguments_.getParsedStringArg("--input-text");
         }
         else {
-            std::string inputFilePath = argumentContainer_.getParsedStringArg("--input-file");
+            std::string inputFilePath = arguments_.getParsedStringArg("--input-file");
 
             inputText_ = readFile(inputFilePath);
         }
@@ -96,7 +96,7 @@ namespace {
         std::vector<std::string> synonyms = findSynonymsOfWord(word);
         
         bool areMultipleSuggestionsProvided =
-            argumentContainer_.wasArgProvided("--multiple-suggestions");
+            arguments_.wasArgProvided("--multiple-suggestions");
 
         if (areMultipleSuggestionsProvided){
             word = createMultipleSuggestionsList(synonyms, word);
@@ -132,8 +132,8 @@ namespace {
     }
 }
 
-std::string paraphraseText(CLIArgumentContainer argumentContainer){
-    argumentContainer_ = argumentContainer;
+std::string paraphraseText(CLIArgumentHolder arguments){
+    arguments_ = arguments;
     organizeInputText();
     
     return applySynonymsToInputText();

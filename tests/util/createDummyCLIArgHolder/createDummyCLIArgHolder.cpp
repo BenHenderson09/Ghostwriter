@@ -1,7 +1,7 @@
-#include "../../../src/CLIArgumentContainer/CLIArgumentContainer.hpp"
-#include "createDummyCLIArgContainer.hpp"
+#include "../../../src/CLIArgumentHolder/CLIArgumentHolder.hpp"
+#include "createDummyCLIArgHolder.hpp"
 
-CLIArgumentContainer createDummyCLIArgContainer
+CLIArgumentHolder createDummyCLIArgHolder
         (const std::initializer_list<std::string>& args){
     std::string dummyArgs;
     dummyArgs += "--input-text placeholder text";
@@ -10,5 +10,5 @@ CLIArgumentContainer createDummyCLIArgContainer
         dummyArgs += " " + arg;
     }
 
-    return CLIArgumentContainer(dummyArgs);
+    return CLIArgumentHolder(dummyArgs);
 }

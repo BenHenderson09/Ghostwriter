@@ -1,15 +1,15 @@
-#ifndef CLI_ARGUMENT_CONTAINER_HPP
-#define CLI_ARGUMENT_CONTAINER_HPP
+#ifndef CLI_ARGUMENT_HOLDER_HPP
+#define CLI_ARGUMENT_HOLDER_HPP
 
 #include <string>
 #include <vector>
 #include <map>
 
-class CLIArgumentContainer {
+class CLIArgumentHolder {
     public:
-        CLIArgumentContainer(const std::string& inputArgs);
-        CLIArgumentContainer(char** inputArgs);
-        CLIArgumentContainer() = default;
+        CLIArgumentHolder(const std::string& inputArgs);
+        CLIArgumentHolder(char** inputArgs);
+        CLIArgumentHolder() = default;
 
         std::string getInputArgs() const;
         void processInputArgs(const std::string& inputArgs);

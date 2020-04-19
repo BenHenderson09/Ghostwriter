@@ -2,39 +2,39 @@
 #include <vector>
 #include <map>
 #include "../../config/FlagConfig.hpp"
-#include "CLIArgumentContainer.hpp"
+#include "CLIArgumentHolder.hpp"
 
-CLIArgumentContainer::CLIArgumentContainer(const std::string& inputArgs){
+CLIArgumentHolder::CLIArgumentHolder(const std::string& inputArgs){
     processInputArgs(inputArgs);
 }
 
-CLIArgumentContainer::CLIArgumentContainer(char** inputArgs){
+CLIArgumentHolder::CLIArgumentHolder(char** inputArgs){
     processInputArgs(convertCStringArgsToString(inputArgs));
 }
 
-std::string CLIArgumentContainer::getInputArgs() const {
+std::string CLIArgumentHolder::getInputArgs() const {
     return inputArgs;
 }
 
-void CLIArgumentContainer::processInputArgs(const std::string& inputArgs){
+void CLIArgumentHolder::processInputArgs(const std::string& inputArgs){
     this->inputArgs = inputArgs;
     clearPreviouslyParsedArgs();
     parseInputArgs();
 }
 
-std::string CLIArgumentContainer::getParsedStringArg(const std::string& nameOfStringArg) const {
+std::string CLIArgumentHolder::getParsedStringArg(const std::string& nameOfStringArg) const {
     return this->parsedStringArgs.at(nameOfStringArg);
 }
 
-bool CLIArgumentContainer::getParsedBoolArg(const std::string& nameOfBoolArg) const {
+bool CLIArgumentHolder::getParsedBoolArg(const std::string& nameOfBoolArg) const {
     return this->parsedBoolArgs.at(nameOfBoolArg);
 }
 
-bool CLIArgumentContainer::wasArgProvided(const std::string& arg) const {
+bool CLIArgumentHolder::wasArgProvided(const std::string& arg) const {
     return inputArgs.find(arg) != std::string::npos;
 }
 
-std::string CLIArgumentContainer::convertCStringArgsToString(char** inputArgs){
+std::string CLIArgumentHolder::convertCStringArgsToString(char** inputArgs){
     std::string argsAsString;
 
     // Iterate over all user-defined inputArgs, which begin at index 1
@@ -47,18 +47,18 @@ std::string CLIArgumentContainer::convertCStringArgsToString(char** inputArgs){
     return argsAsString;
 }
 
-void CLIArgumentContainer::clearPreviouslyParsedArgs(){
+void CLIArgumentHolder::clearPreviouslyParsedArgs(){
     parsedBoolArgs.clear();
     parsedStringArgs.clear();
 }
 
-void CLIArgumentContainer::parseInputArgs(){
+void CLIArgumentHolder::parseInputArgs(){
     parseBoolArgs();
     parseStringArgs();
     checkIfArgsAreValid();
 }
 
-void CLIArgumentContainer::parseBoolArgs(){
+void CLIArgumentHolder::parseBoolArgs(){
     std::vector<std::string> boolFlags = extractFlagsFromConfig("bool");
 
     for (const std::string& flag : boolFlags){
@@ -72,7 +72,7 @@ void CLIArgumentContainer::parseBoolArgs(){
     }
 }
 
-void CLIArgumentContainer::parseStringArgs(){
+void CLIArgumentHolder::parseStringArgs(){
     std::vector<std::string> stringFlags = extractFlagsFromConfig("string");
 
     for (const std::string& flag : stringFlags){
@@ -87,7 +87,7 @@ void CLIArgumentContainer::parseStringArgs(){
     }
 }
 
-std::string CLIArgumentContainer::extractFlagValueFromArgs(const std::string& flag){
+std::string CLIArgumentHolder::extractFlagValueFromArgs(const std::string& flag){
     int indexOfStartOfFlagValue = inputArgs.find(flag) + flag.length() + 1;
 
     checkIfFlagValueIsPresent(indexOfStartOfFlagValue);
@@ -100,7 +100,7 @@ std::string CLIArgumentContainer::extractFlagValueFromArgs(const std::string& fl
     return flagValue;
 }
 
-void CLIArgumentContainer::checkIfFlagValueIsPresent(int indexOfStartOfFlagValue){
+void CLIArgumentHolder::checkIfFlagValueIsPresent(int indexOfStartOfFlagValue){
     bool flagIsLastAndHasNoValue = indexOfStartOfFlagValue > inputArgs.length();
     std::string flagLeftBlankMessage = "Specified flag value can't be left blank.";
 
@@ -114,7 +114,7 @@ void CLIArgumentContainer::checkIfFlagValueIsPresent(int indexOfStartOfFlagValue
         throw std::runtime_error(flagLeftBlankMessage);
 }
 
-std::vector<std::string> CLIArgumentContainer::extractFlagsFromConfig(const std::string& flagType){
+std::vector<std::string> CLIArgumentHolder::extractFlagsFromConfig(const std::string& flagType){
     std::vector<std::string> flags;
 
     for (const auto& item : FlagConfig::FLAG_CONFIGURATIONS.items()){
@@ -127,11 +127,11 @@ std::vector<std::string> CLIArgumentContainer::extractFlagsFromConfig(const std:
     return flags;
 }
 
-void CLIArgumentContainer::checkIfArgsAreValid(){
+void CLIArgumentHolder::checkIfArgsAreValid(){
     checkIfInputTextHasBeenGivenCorrectly();
 }
 
-void CLIArgumentContainer::checkIfInputTextHasBeenGivenCorrectly(){
+void CLIArgumentHolder::checkIfInputTextHasBeenGivenCorrectly(){
     bool inputFileProvided = wasArgProvided("--input-file");
     bool inputTextProvided = wasArgProvided("--input-text");
 

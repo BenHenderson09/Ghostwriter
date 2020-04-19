@@ -3,8 +3,8 @@
 #include <vector>
 #include <catch2/catch.hpp>
 #include "../../src/paraphraseText/paraphraseText.hpp"
-#include "../../src/CLIArgumentContainer/CLIArgumentContainer.hpp"
-#include "../util/createDummyCLIArgContainer/createDummyCLIArgContainer.hpp"
+#include "../../src/CLIArgumentHolder/CLIArgumentHolder.hpp"
+#include "../util/createDummyCLIArgHolder/createDummyCLIArgHolder.hpp"
 #include "../../src/util/readFile/readFile.hpp"
 
 std::vector<std::string> splitTextIntoEachSetOfSuggestions(std::string text){
@@ -38,8 +38,8 @@ TEST_CASE("Each form of input text is paraphrased", "[input-text-paraphrased]"){
         std::string argValue = "placeholder text";
         std::string assembledInputArg = argName + " " + argValue;
 
-        CLIArgumentContainer argumentContainer(assembledInputArg);
-        std::string paraphrasedText = paraphraseText(argumentContainer);
+        CLIArgumentHolder arguments(assembledInputArg);
+        std::string paraphrasedText = paraphraseText(arguments);
 
         REQUIRE_FALSE(paraphrasedText == argValue);
     }
@@ -48,18 +48,18 @@ TEST_CASE("Each form of input text is paraphrased", "[input-text-paraphrased]"){
         std::string placeholderInputFilePath = "placeholder_input";
         setupPlaceholderInputFile(placeholderInputFilePath);    
 
-        CLIArgumentContainer argumentContainer("--input-file " + placeholderInputFilePath);
-        std::string paraphrasedText = paraphraseText(argumentContainer);
+        CLIArgumentHolder arguments("--input-file " + placeholderInputFilePath);
+        std::string paraphrasedText = paraphraseText(arguments);
 
         REQUIRE_FALSE(paraphrasedText == readFile(placeholderInputFilePath));
     }
 }
 
 TEST_CASE("Multiple paraphrasing suggestions are provided", "[multiple-suggestions-provided]"){
-    CLIArgumentContainer argumentContainer =
-        createDummyCLIArgContainer({"--multiple-suggestions"});
+    CLIArgumentHolder arguments =
+        createDummyCLIArgHolder({"--multiple-suggestions"});
 
-    std::string paraphrasedText = paraphraseText(argumentContainer);
+    std::string paraphrasedText = paraphraseText(arguments);
     
     for (std::string setOfSuggestions : splitTextIntoEachSetOfSuggestions(paraphrasedText)){
         bool setOfSuggestionsHasMultipleSuggestions =

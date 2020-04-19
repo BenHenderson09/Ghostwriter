@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include "writeOutputText.hpp"
-#include "../CLIArgumentContainer/CLIArgumentContainer.hpp"
+#include "../CLIArgumentHolder/CLIArgumentHolder.hpp"
 
 namespace {
     // Variables
@@ -28,13 +28,13 @@ namespace {
 }
 
 void writeOutputText
-        (const CLIArgumentContainer& argumentContainer, const std::string& outputText){
+        (const CLIArgumentHolder& arguments, const std::string& outputText){
     outputText_ = outputText;
-    bool isOutputLocationAFile = argumentContainer.wasArgProvided("--output-file");
+    bool isOutputLocationAFile = arguments.wasArgProvided("--output-file");
 
     if (isOutputLocationAFile){
         const std::string& outputFileLocation =
-            argumentContainer.getParsedStringArg("--output-file");
+            arguments.getParsedStringArg("--output-file");
 
         writeToOutputFile(outputFileLocation);
     }

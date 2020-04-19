@@ -2,8 +2,8 @@
 #define TEXT_PARAPHRASER_HPP
 
 #include <string>
-#include "../CLIArgumentContainer/CLIArgumentContainer.hpp"
+#include "../CLIArgumentHolder/CLIArgumentHolder.hpp"
 
-std::string paraphraseText(CLIArgumentContainer argumentContainer);
+std::string paraphraseText(CLIArgumentHolder arguments);
 
 #endif

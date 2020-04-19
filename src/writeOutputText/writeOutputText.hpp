@@ -2,8 +2,8 @@
 #define OUTPUT_WRITER_HPP
 
 #include <string>
-#include "../CLIArgumentContainer/CLIArgumentContainer.hpp"
+#include "../CLIArgumentHolder/CLIArgumentHolder.hpp"
 
-void writeOutputText(const CLIArgumentContainer& argumentContainer, const std::string& outputText);
+void writeOutputText(const CLIArgumentHolder& arguments, const std::string& outputText);
 
 #endif
