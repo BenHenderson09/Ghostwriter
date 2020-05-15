@@ -1,5 +1,5 @@
 # Ghostwriter
-Ghostwriter is a CLI tool that's used to paraphrase text, allowing users to quickly put extracts in "their own words".
+Ghostwriter is a CLI tool that's used to paraphrase short phrases, allowing users to quickly put extracts in "their own words".
 When users provide input text to Ghostwriter, the words will be analysed and synonyms will be determined in order to act
 as a replacement for the original word.
 
