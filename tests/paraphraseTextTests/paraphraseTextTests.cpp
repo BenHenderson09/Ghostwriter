@@ -10,11 +10,11 @@
 std::vector<std::string> splitTextIntoEachSetOfSuggestions(std::string text){
     std::vector<std::string> sections;
 
-    for (int startIndex{text.find("(")};
+    for (std::size_t startIndex{text.find("(")};
             startIndex != std::string::npos;
             startIndex = text.find("(")){
-        int endIndex{text.find(")")};
-        int lengthOfSetOfSuggestions{endIndex - startIndex + 1};
+        std::size_t endIndex{text.find(")")};
+        std::size_t lengthOfSetOfSuggestions{endIndex - startIndex + 1};
         
         std::string setOfSuggestions{text.substr(startIndex, lengthOfSetOfSuggestions)};
         sections.push_back(setOfSuggestions);
