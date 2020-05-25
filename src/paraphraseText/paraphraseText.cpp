@@ -22,7 +22,7 @@ namespace {
     std::vector<std::string> splitInputTextIntoWords(const std::string& inputText){
         std::vector<std::string> words;
 
-        std::stringstream ss(inputText);
+        std::stringstream ss{inputText};
         std::string buffer;
 
         while(ss >> buffer){
@@ -33,13 +33,13 @@ namespace {
     }
 
     std::string findInputText(const CLIArgumentHolder& arguments){
-        bool isInputTextProvidedAsArgument = arguments.wasArgProvided("--input-text");
+        bool isInputTextProvidedAsArgument{arguments.wasArgProvided("--input-text")};
 
         if (isInputTextProvidedAsArgument){
             return arguments.getParsedStringArg("--input-text");
         }
         else {
-            std::string inputFilePath = arguments.getParsedStringArg("--input-file");
+            std::string inputFilePath{arguments.getParsedStringArg("--input-file")};
 
             return readFile(inputFilePath);
         }
@@ -79,10 +79,9 @@ namespace {
     }
 
     void modifyWord(std::string& word, const CLIArgumentHolder& arguments){
-        std::vector<std::string> synonyms = findSynonymsOfWord(word);
+        std::vector<std::string> synonyms{findSynonymsOfWord(word)};
         
-        bool areMultipleSuggestionsProvided =
-            arguments.wasArgProvided("--multiple-suggestions");
+        bool areMultipleSuggestionsProvided{arguments.wasArgProvided("--multiple-suggestions")};
 
         if (areMultipleSuggestionsProvided){
             word = createMultipleSuggestionsList(synonyms, word);
@@ -94,7 +93,7 @@ namespace {
 
     std::string createMultipleSuggestionsList
             (const std::vector<std::string>& synonyms, const std::string& word){
-        std::string suggestionsList = "(";
+        std::string suggestionsList{"("};
 
         for (const std::string& suggestion : synonyms){
             suggestionsList += suggestion + "/";
@@ -120,8 +119,9 @@ namespace {
 
 std::string paraphraseText(CLIArgumentHolder arguments){
     std::vector<std::string> inputTextAsWords = splitInputTextIntoWords(findInputText(arguments));
-    std::vector<std::thread> wordModificationThreads =
-        createWordModificationThreads(inputTextAsWords, arguments);
+    std::vector<std::thread> wordModificationThreads{
+        createWordModificationThreads(inputTextAsWords, arguments)
+    };
 
     for (std::thread& thread : wordModificationThreads){
         thread.join();

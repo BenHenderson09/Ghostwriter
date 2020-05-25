@@ -11,7 +11,7 @@ namespace {
     std::string extractInputFileContents(std::ifstream& inputFileReader){
         std::string contents;
 
-        for (int i = 0; !inputFileReader.eof(); i++){
+        for (int i{0}; !inputFileReader.eof(); i++){
             std::string line;
             getline(inputFileReader, line);
 

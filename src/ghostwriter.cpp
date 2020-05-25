@@ -6,7 +6,7 @@
 int main(int argc, char** argv){
     try {
         CLIArgumentHolder arguments(argv);
-        std::string outputText = paraphraseText(arguments);
+        std::string outputText{paraphraseText(arguments)};
 
         writeOutputText(arguments, outputText);
     }

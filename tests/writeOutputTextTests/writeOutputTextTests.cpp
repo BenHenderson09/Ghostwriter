@@ -5,10 +5,11 @@
 #include "../../src/util/readFile/readFile.hpp"
 
 TEST_CASE("Output text is written to file", "[output-text-written-to-file]"){
-    std::string outputFilePath = "output.txt";
-    std::string outputText = "some text";
-    CLIArgumentHolder arguments =
-        createDummyCLIArgHolder({"--output-file " + outputFilePath});
+    std::string outputFilePath{"output.txt"};
+    std::string outputText{"some text"};
+    CLIArgumentHolder arguments{
+        createDummyCLIArgHolder({"--output-file " + outputFilePath})
+    };
 
     writeOutputText(arguments, outputText);
 

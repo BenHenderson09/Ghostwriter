@@ -10,13 +10,13 @@
 std::vector<std::string> splitTextIntoEachSetOfSuggestions(std::string text){
     std::vector<std::string> sections;
 
-    for (int startIndex = text.find("(");
+    for (int startIndex{text.find("(")};
             startIndex != std::string::npos;
             startIndex = text.find("(")){
-        int endIndex = text.find(")");
-        int lengthOfSetOfSuggestions = endIndex - startIndex + 1;
+        int endIndex{text.find(")")};
+        int lengthOfSetOfSuggestions{endIndex - startIndex + 1};
         
-        std::string setOfSuggestions = text.substr(startIndex, lengthOfSetOfSuggestions);
+        std::string setOfSuggestions{text.substr(startIndex, lengthOfSetOfSuggestions)};
         sections.push_back(setOfSuggestions);
 
         text.erase(startIndex, lengthOfSetOfSuggestions);
@@ -34,36 +34,36 @@ void setupPlaceholderInputFile(const std::string& placeholderInputFilePath){
 
 TEST_CASE("Each form of input text is paraphrased", "[input-text-paraphrased]"){
     SECTION("--input-text is paraphrased"){
-        std::string argName = "--input-text";
-        std::string argValue = "placeholder text";
-        std::string assembledInputArg = argName + " " + argValue;
+        std::string argName{"--input-text"};
+        std::string argValue{"placeholder text"};
+        std::string assembledInputArg{argName + " " + argValue};
 
         CLIArgumentHolder arguments(assembledInputArg);
-        std::string paraphrasedText = paraphraseText(arguments);
+        std::string paraphrasedText{paraphraseText(arguments)};
 
         REQUIRE_FALSE(paraphrasedText == argValue);
     }
 
     SECTION("--input-file is paraphrased"){
-        std::string placeholderInputFilePath = "placeholder_input";
+        std::string placeholderInputFilePath{"placeholder_input"};
         setupPlaceholderInputFile(placeholderInputFilePath);    
 
         CLIArgumentHolder arguments("--input-file " + placeholderInputFilePath);
-        std::string paraphrasedText = paraphraseText(arguments);
+        std::string paraphrasedText{paraphraseText(arguments)};
 
         REQUIRE_FALSE(paraphrasedText == readFile(placeholderInputFilePath));
     }
 }
 
 TEST_CASE("Multiple paraphrasing suggestions are provided", "[multiple-suggestions-provided]"){
-    CLIArgumentHolder arguments =
-        createDummyCLIArgHolder({"--multiple-suggestions"});
+    CLIArgumentHolder arguments{createDummyCLIArgHolder({"--multiple-suggestions"})};
 
-    std::string paraphrasedText = paraphraseText(arguments);
+    std::string paraphrasedText{paraphraseText(arguments)};
     
     for (std::string setOfSuggestions : splitTextIntoEachSetOfSuggestions(paraphrasedText)){
-        bool setOfSuggestionsHasMultipleSuggestions =
-            setOfSuggestions.find("/") != std::string::npos;
+        bool setOfSuggestionsHasMultipleSuggestions{
+            setOfSuggestions.find("/") != std::string::npos
+        };
 
         REQUIRE(setOfSuggestionsHasMultipleSuggestions);
     }
