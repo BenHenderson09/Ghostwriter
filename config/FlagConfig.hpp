@@ -4,31 +4,32 @@
 #include <nlohmann/json.hpp>
 
 namespace FlagConfig {
-    const nlohmann::json FLAG_CONFIGURATIONS = {
+    const nlohmann::json FLAG_CONFIGURATIONS =
         {
-            "--input-text", {
-                {"type", "string"}
+            {
+                "--input-text", {
+                    {"type", "string"}
+                }
+            },
+
+            {
+                "--input-file", {
+                    {"type", "string"}
+                },
+            },
+
+            {
+                "--output-file", {
+                    {"type", "string"}
+                },
+            },
+
+            {
+                "--multiple-suggestions", {
+                    {"type", "bool"}
+                } 
             }
-        },
-
-        {
-            "--input-file", {
-                {"type", "string"}
-            },
-        },
-
-        {
-            "--output-file", {
-                {"type", "string"}
-            },
-        },
-
-        {
-            "--multiple-suggestions", {
-                {"type", "bool"}
-            } 
-        }
-    };
+        };
 }
 
 #endif

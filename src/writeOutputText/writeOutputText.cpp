@@ -18,11 +18,10 @@ namespace {
 }
 
 void writeOutputText(const CLIArgumentHolder& arguments, const std::string& outputText){
-    bool isOutputLocationAFile = arguments.wasArgProvided("--output-file");
+    bool isOutputLocationAFile{arguments.wasArgProvided("--output-file")};
 
     if (isOutputLocationAFile){
-        const std::string& outputFileLocation =
-            arguments.getParsedStringArg("--output-file");
+        const std::string& outputFileLocation{arguments.getParsedStringArg("--output-file")};
 
         writeToOutputFile(outputText, outputFileLocation);
     }

@@ -38,7 +38,7 @@ std::string CLIArgumentHolder::convertCStringArgsToString(char** inputArgs){
     std::string argsAsString;
 
     // Iterate over all user-defined inputArgs, which begin at index 1
-    for (int i = 1; *(inputArgs+i); i++){
+    for (int i{1}; *(inputArgs+i); i++){
         if (i != 1) argsAsString += " ";
 
         argsAsString += *(inputArgs+i);
@@ -59,10 +59,10 @@ void CLIArgumentHolder::parseInputArgs(){
 }
 
 void CLIArgumentHolder::parseBoolArgs(){
-    std::vector<std::string> boolFlags = extractFlagsFromConfig("bool");
+    std::vector<std::string> boolFlags{extractFlagsFromConfig("bool")};
 
     for (const std::string& flag : boolFlags){
-        bool isFlagSpecifiedInArgs = inputArgs.find(flag) != std::string::npos;
+        bool isFlagSpecifiedInArgs{inputArgs.find(flag) != std::string::npos};
 
         if (isFlagSpecifiedInArgs){
             std::pair<std::string, bool> parsedBoolArg(flag, true);
@@ -73,10 +73,10 @@ void CLIArgumentHolder::parseBoolArgs(){
 }
 
 void CLIArgumentHolder::parseStringArgs(){
-    std::vector<std::string> stringFlags = extractFlagsFromConfig("string");
+    std::vector<std::string> stringFlags{extractFlagsFromConfig("string")};
 
     for (const std::string& flag : stringFlags){
-        bool isFlagSpecifiedInArgs = inputArgs.find(flag) != std::string::npos;
+        bool isFlagSpecifiedInArgs{inputArgs.find(flag) != std::string::npos};
 
         if (isFlagSpecifiedInArgs){
             std::pair<std::string, std::string>
@@ -88,27 +88,26 @@ void CLIArgumentHolder::parseStringArgs(){
 }
 
 std::string CLIArgumentHolder::extractFlagValueFromArgs(const std::string& flag){
-    int indexOfStartOfFlagValue = inputArgs.find(flag) + flag.length() + 1;
+    std::size_t indexOfStartOfFlagValue{inputArgs.find(flag) + flag.length() + 1};
 
     checkIfFlagValueIsPresent(indexOfStartOfFlagValue);
 
-    int indexOfEndOfFlagValue = inputArgs.find(" --", indexOfStartOfFlagValue);
-    int lengthOfFlagValue = indexOfEndOfFlagValue - indexOfStartOfFlagValue;
+    std::size_t indexOfEndOfFlagValue{inputArgs.find(" --", indexOfStartOfFlagValue)};
+    std::size_t lengthOfFlagValue{indexOfEndOfFlagValue - indexOfStartOfFlagValue};
 
-    std::string flagValue = inputArgs.substr(indexOfStartOfFlagValue, lengthOfFlagValue);
+    std::string flagValue{inputArgs.substr(indexOfStartOfFlagValue, lengthOfFlagValue)};
 
     return flagValue;
 }
 
 void CLIArgumentHolder::checkIfFlagValueIsPresent(int indexOfStartOfFlagValue){
-    bool flagIsLastAndHasNoValue = indexOfStartOfFlagValue > inputArgs.length();
-    std::string flagLeftBlankMessage = "Specified flag value can't be left blank.";
+    bool flagIsLastAndHasNoValue{indexOfStartOfFlagValue > inputArgs.length()};
+    std::string flagLeftBlankMessage{"Specified flag value can't be left blank."};
 
     if (flagIsLastAndHasNoValue)
         throw std::runtime_error(flagLeftBlankMessage);
 
-    bool flagIsFollowedByAnotherFlag =
-        inputArgs.substr(indexOfStartOfFlagValue, 2) == "--";
+    bool flagIsFollowedByAnotherFlag{inputArgs.substr(indexOfStartOfFlagValue, 2) == "--"};
 
     if (flagIsFollowedByAnotherFlag)
         throw std::runtime_error(flagLeftBlankMessage);
@@ -118,8 +117,7 @@ std::vector<std::string> CLIArgumentHolder::extractFlagsFromConfig(const std::st
     std::vector<std::string> flags;
 
     for (const auto& item : FlagConfig::FLAG_CONFIGURATIONS.items()){
-        std::string typeOfFlagInConfig =
-            FlagConfig::FLAG_CONFIGURATIONS[item.key()]["type"];
+        std::string typeOfFlagInConfig{FlagConfig::FLAG_CONFIGURATIONS[item.key()]["type"]};
         
         if (typeOfFlagInConfig == flagType) flags.push_back(item.key());
     }
@@ -132,8 +130,8 @@ void CLIArgumentHolder::checkIfArgsAreValid(){
 }
 
 void CLIArgumentHolder::checkIfInputTextHasBeenGivenCorrectly(){
-    bool inputFileProvided = wasArgProvided("--input-file");
-    bool inputTextProvided = wasArgProvided("--input-text");
+    bool inputFileProvided{wasArgProvided("--input-file")};
+    bool inputTextProvided{wasArgProvided("--input-text")};
 
     if (!inputFileProvided && !inputTextProvided)
         throw std::runtime_error("Input text must be provided.");

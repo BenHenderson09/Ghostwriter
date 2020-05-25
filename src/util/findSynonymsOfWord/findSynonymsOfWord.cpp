@@ -21,8 +21,7 @@ namespace {
     );
     
     void executeRequest(CURL* curl);
-    std::vector<std::string>
-        extractSynonymsFromResponse(const std::string& responseString);
+    std::vector<std::string> extractSynonymsFromResponse(const std::string& responseString);
 
     // Implementation
     std::string buildApiEndpoint(const std::string& word){
@@ -32,7 +31,7 @@ namespace {
     std::string queryApiForSynonyms(const std::string& apiEndpoint){
         std::string responseString;
 
-        CURL* curl = createCurlSession(apiEndpoint);
+        CURL* curl{createCurlSession(apiEndpoint)};
         setHttpHeaders(curl);
         linkResponseString(curl, &responseString);
         executeRequest(curl);
@@ -41,7 +40,7 @@ namespace {
     }
 
     CURL* createCurlSession(const std::string& apiEndpoint){
-        CURL* curl = curl_easy_init();
+        CURL* curl{curl_easy_init()};
         curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "GET");
         curl_easy_setopt(curl, CURLOPT_URL, apiEndpoint.c_str());
         
@@ -49,7 +48,7 @@ namespace {
     }
 
     void setHttpHeaders(CURL* curl){
-        struct curl_slist *headers = NULL;
+        struct curl_slist *headers{NULL};
 
         headers = curl_slist_append(headers, WordApiConfig::API_HOST_HEADER.c_str());
         headers = curl_slist_append(headers, WordApiConfig::API_KEY_HEADER.c_str());
@@ -76,19 +75,17 @@ namespace {
         curl_easy_cleanup(curl);
     }
 
-    std::vector<std::string> extractSynonymsFromResponse
-            (const std::string& responseString){
-        bool isResponseInJsonFormat = responseString[0] == '{';
+    std::vector<std::string> extractSynonymsFromResponse(const std::string& responseString){
+        bool isResponseInJsonFormat{responseString[0] == '{'};
 
         if (!isResponseInJsonFormat) return {};
 
-        nlohmann::json jsonResponse = nlohmann::json::parse(responseString);
+        nlohmann::json jsonResponse{nlohmann::json::parse(responseString)};
 
-        bool doesResponseIncludeSynonyms = 
-            JSONObjectHasKey(jsonResponse, "synonyms");    
+        bool doesResponseIncludeSynonyms{JSONObjectHasKey(jsonResponse, "synonyms")};    
 
         if (doesResponseIncludeSynonyms){
-            nlohmann::json synonyms = jsonResponse["synonyms"];
+            nlohmann::json synonyms{jsonResponse["synonyms"]};
 
             return synonyms.get<std::vector<std::string>>();
         }
@@ -98,7 +95,7 @@ namespace {
 }
 
 std::vector<std::string> findSynonymsOfWord(const std::string& word){
-    std::string responseString = queryApiForSynonyms(buildApiEndpoint(word));
+    std::string responseString{queryApiForSynonyms(buildApiEndpoint(word))};
 
     return extractSynonymsFromResponse(responseString);
 }
