@@ -8,67 +8,56 @@
 #include "../util/readFile/readFile.hpp"
 
 namespace {
-    // Variables
-    CLIArgumentHolder arguments_;
-    std::string inputText_;
-    bool isOutputLocationAFile_;
-
-    // Prototypes
-    void organizeInputText();
-    void determineOutputLocation();
-    std::string applySynonymsToInputText();
-    std::vector<std::string> splitInputTextIntoWords();
-    bool wordRequiresModification(const std::string& word);
-    std::thread createWordModificationThread(std::string& word);
-    void modifyWord(std::string& word);
-    
-    std::string createMultipleSuggestionsList(
-        const std::vector<std::string>& synonyms,
-        const std::string& word
-    );
-
+    std::vector<std::string> splitInputTextIntoWords(const std::string& inputText);
+    std::string findInputText(const CLIArgumentHolder& arguments);
+    std::vector<std::thread> createWordModificationThreads
+        (std::vector<std::string>& inputTextAsWords, const CLIArgumentHolder& arguments);
+    bool wordRequiresModification(const std::string& word);    
+    std::thread createWordModificationThread(std::string& word, const CLIArgumentHolder& arguments);
+    void modifyWord(std::string& word, const CLIArgumentHolder& arguments);
+    std::string createMultipleSuggestionsList
+        (const std::vector<std::string>& synonyms, const std::string& word);
     std::string formatOutputText(const std::vector<std::string>& inputTextAsWords);
 
-    // Implementation
-    void organizeInputText(){
-        bool isInputTextProvidedAsArgument = arguments_.wasArgProvided("--input-text");
+    std::vector<std::string> splitInputTextIntoWords(const std::string& inputText){
+        std::vector<std::string> words;
+
+        std::stringstream ss(inputText);
+        std::string buffer;
+
+        while(ss >> buffer){
+            words.push_back(buffer);
+        }
+
+        return words;
+    }
+
+    std::string findInputText(const CLIArgumentHolder& arguments){
+        bool isInputTextProvidedAsArgument = arguments.wasArgProvided("--input-text");
 
         if (isInputTextProvidedAsArgument){
-            inputText_ = arguments_.getParsedStringArg("--input-text");
+            return arguments.getParsedStringArg("--input-text");
         }
         else {
-            std::string inputFilePath = arguments_.getParsedStringArg("--input-file");
+            std::string inputFilePath = arguments.getParsedStringArg("--input-file");
 
-            inputText_ = readFile(inputFilePath);
+            return readFile(inputFilePath);
         }
     }
 
-    std::string applySynonymsToInputText(){
-        std::vector<std::string> inputTextAsWords = splitInputTextIntoWords();
+    std::vector<std::thread> createWordModificationThreads
+            (std::vector<std::string>& inputTextAsWords, const CLIArgumentHolder& arguments){
         std::vector<std::thread> wordModificationThreads;
 
         for (std::string& word : inputTextAsWords){
             if (wordRequiresModification(word)){
                 wordModificationThreads.push_back(
-                    createWordModificationThread(word)
+                    createWordModificationThread(word, arguments)
                 );
             }
         }
 
-        for (std::thread& thread : wordModificationThreads){
-            thread.join();
-        }
-
-        return formatOutputText(inputTextAsWords);
-    }
-
-    std::thread createWordModificationThread(std::string& word){
-        std::thread wordModificationThread(
-            &modifyWord,
-            std::ref(word)
-        );
-
-        return wordModificationThread;
+        return wordModificationThreads;
     }
 
     bool wordRequiresModification(const std::string& word){
@@ -79,24 +68,21 @@ namespace {
         return true;
     }
 
-    std::vector<std::string> splitInputTextIntoWords(){
-        std::vector<std::string> words;
+    std::thread createWordModificationThread(std::string& word, const CLIArgumentHolder& arguments){
+        std::thread wordModificationThread(
+            &modifyWord,
+            std::ref(word),
+            arguments
+        );
 
-        std::stringstream ss(inputText_);
-        std::string buffer;
-
-        while(ss >> buffer){
-            words.push_back(buffer);
-        }
-
-        return words;
+        return wordModificationThread;
     }
 
-    void modifyWord(std::string& word){
+    void modifyWord(std::string& word, const CLIArgumentHolder& arguments){
         std::vector<std::string> synonyms = findSynonymsOfWord(word);
         
         bool areMultipleSuggestionsProvided =
-            arguments_.wasArgProvided("--multiple-suggestions");
+            arguments.wasArgProvided("--multiple-suggestions");
 
         if (areMultipleSuggestionsProvided){
             word = createMultipleSuggestionsList(synonyms, word);
@@ -133,8 +119,13 @@ namespace {
 }
 
 std::string paraphraseText(CLIArgumentHolder arguments){
-    arguments_ = arguments;
-    organizeInputText();
-    
-    return applySynonymsToInputText();
+    std::vector<std::string> inputTextAsWords = splitInputTextIntoWords(findInputText(arguments));
+    std::vector<std::thread> wordModificationThreads =
+        createWordModificationThreads(inputTextAsWords, arguments);
+
+    for (std::thread& thread : wordModificationThreads){
+        thread.join();
+    }
+
+    return formatOutputText(inputTextAsWords);
 }
